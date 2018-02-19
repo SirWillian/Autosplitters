@@ -1,0 +1,65 @@
+/===============================================/
+/=====Left 4 Dead 2 Autosplitter Debugging======/
+/=================by bill_play3=================/
+/===============================================/
+
+If you are here, it's probably because you had problems with the splitter or because you are
+curious about what was written here.
+
+(Apparently there's a LiveSplit component called ASLVarViewer that I didn't know of by the
+time I made this, so I guess you can use that too).
+
+The splitter has the Debug setting on it. With it you can see what values the splitter is
+using to take actions. You would need to check the .asl file to see what's relevant to
+each situation, so it can be quite a bit of work and requires quite a bit of programming
+knowledge. You can check the LiveSplit's AutoSplitter reference if you wanna know more. If
+you find what variables aren't changing, you can look for memory values that work for you
+yourself. I used Cheat Engine to find these values. It's important to mention that every 
+memory address found was a static address (should appear green on Cheat Engine), but if you
+find a pointer path that works and is accurate with the variables description, you can use
+that just fine. I won't describe how to use Cheat Engine, but there's plenty of tutorials on
+the internet. I only used very basic features of Cheat Engine. Below there's a description of
+what each variable is and what values said variable has at each moment:
+
+/===============================================/
+/===================Variables===================/
+/===============================================/
+
+-whatsLoading: a string that seemingly indicates what is loading right now. During a chapter,
+this memory value should contain the chapter's name, and during loads, some random object
+names. You can just find something that consistently has the level names, but i found this
+one better.
+
+-gameLoading: a variable that shows if the game is loading. Should be 1 (or True) whenever
+a campaign is loading (the banner is on screen), once the loading symbol shows up on level
+transitions and for a couple frames when you die and respawn. It should be 0 (or False) as
+soon as previous things disappear from the screen.
+
+-cutscenePlaying1 and 2: a variable that shows if any cutscene is loading (either intro
+cutscene or finale cutscene). Should become 1 as soon as the game stops loading a campaign
+for the first time (when the banner shows up) and as soon as finales are activated (but the
+screen hasn't faded yet). In case of only finding one memory value that behaves like this,
+just repeat it for 1 and 2.
+
+-finaleTrigger1 and 2: a variable that shows when the finale gets triggered and the screen
+fully fades. Should be 1 when the previous description happens.
+
+-campaignLoading: a variable that indicates if you are loading a campaign (when the banner
+is on screen).
+
+-scoreboardLoad1 and 2: variables that indicate whenever the scoreboard appears on screen.
+Should be 1 as soon as the scoreboard shows up and should go back to 0 as soon as you take
+control again.
+
+-hasControl: a variable that indicates wether you have control over your character or not.
+Should be 1 when alive and 0 when you are dead or not in a server.
+
+
+/===============================================/
+
+Q-I found all these memory addresses. What do I do with them?
+
+A-Once you find the memory addresses or pointer paths that work, on the "state" sections of
+the .asl file, change the addresses for each on the correct game version and you should be
+good to go. Again, refer to the LiveSplit's Autosplitter reference to see how to do it
+properly.
