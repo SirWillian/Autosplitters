@@ -1,6 +1,0 @@
-To use this autosplitter, follow these steps:
-
-1- Open LiveSplit and go to "Edit Layout..."
-2- Add the "Scriptable Auto Splitter" component, which is on the "Control" section
-3- Go to "Layout Settings" and find the component settings.
-4- Click "Browse...", select the file and you should be good to go.
