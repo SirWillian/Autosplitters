@@ -3,6 +3,20 @@ state("left4dead")
 
 }
 
+state("hl2")
+{
+
+}
+
+state("hl2", "1.0")
+{
+	bool     gameLoading      : "engine.dll", 0x5D1E6C;
+	bool     cutscenePlaying1 : "client.dll", 0x522954;
+	bool     cutscenePlaying2 : "client.dll", 0x522A50;
+	bool     scoreboardLoad   : "client.dll", 0x5900E9;
+	bool     hasControl       : "client.dll", 0x574950, 0x0C;
+}
+
 state("left4dead", "1.0")
 {
 	bool     gameLoading      : "engine.dll", 0x5D1E6C;
