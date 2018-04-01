@@ -12,7 +12,7 @@ state("hl2", "1.0")
 {
 	bool     gameLoading      : "engine.dll", 0x5D1E6C;	
 	bool     cutscenePlaying1 : "client.dll", 0x522954;
-	bool     cutscenePlaying2 : "client.dll", 0x522A50;   
+	bool     cutscenePlaying2 : "client.dll", 0x522A50;     
 	bool     scoreboardLoad   : "client.dll", 0x5900E9;
 	bool     hasControl       : "client.dll", 0x574950, 0x0C;
 }
@@ -187,7 +187,7 @@ start
 	if((!vars.startRun && old.gameLoading) && !current.gameLoading)
 	{
 	    //if the cutscene starts
-		if((current.cutscenePlaying1 || current.cutscenePlaying2) && ((!vars.IsAltOffsets) ||(current.cutscenePlaying1 && current.cutscenePlaying2)))
+		if(current.cutscenePlaying1 || current.cutscenePlaying2)
 	    {
             vars.startRun=true;
 		    print("Autostart triggered");			
@@ -223,19 +223,10 @@ split
 	if(settings["campaignSplit"])
 	{
 	    //Split on finales		
-		if(current.cutscenePlaying1 || current.cutscenePlaying2)
+		if((current.cutscenePlaying1 || current.cutscenePlaying2) && !(old.cutscenePlaying1 || old.cutscenePlaying2))
 		{
-		    //if we are not using alt offsets, only one of cutscenePlaying needs to be set to split
-		    if((!vars.IsAltOffsets) && !(old.cutscenePlaying1 || old.cutscenePlaying2))
-		    {
-		        print("Split on finale");
-		        return true;
-		    }		
-		    else if((current.cutscenePlaying1 && current.cutscenePlaying2) && !(old.cutscenePlaying1 && old.cutscenePlaying2))
-		    {
-			    print("Split on finale");
-			    return true;
-		    }		
+		    print("Split on finale");
+		    return true;		    	
 		}
 				
 		
@@ -289,14 +280,29 @@ update
 	{
 		print("Values:\n current.gameLoading = " + current.gameLoading.ToString() +		
 		"\n current.cutscenePlaying1 = " + current.cutscenePlaying1.ToString() +
-		"\n current.cutscenePlaying2 = " + current.cutscenePlaying2.ToString() +
+		"\n current.cutscenePlaying2 = " + current.cutscenePlaying2.ToString() +		
 		"\n current.scoreboardLoad1 = " + current.scoreboardLoad.ToString() +
 		"\n current.hasControl = " + current.hasControl.ToString() +
 		//"\n refreshRate = " + refreshRate.ToString() +
 		"\n vars.startRun = " + vars.startRun.ToString());
 	}
 	
-	if(version == "")
+	
+	//HUGE MEME
+	if(vars.IsAltOffsets)
+	{	    
+	    //if(current.cutscenePlaying2 || current.cutscenePlaying1) 
+		{
+		    //if we are in control or both cutscene variables aren't set, ignore
+		    if(current.hasControl || !(current.cutscenePlaying2 && current.cutscenePlaying1))
+		    {
+		        current.cutscenePlaying1 = false;
+		        current.cutscenePlaying2 = false;
+		    }	
+		}		
+		
+    }	
+	else if(version == "")
 		return false;
 }
 
