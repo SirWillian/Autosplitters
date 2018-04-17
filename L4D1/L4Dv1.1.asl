@@ -152,7 +152,7 @@ split
 	//Split on finales
 	if(settings["campaignSplit"])
 	{
-		if((current.cutscenePlaying1 || current.cutscenePlaying2) && !old.cutscenePlaying1 && !old.cutscenePlaying2)
+		if(!current.gameLoading && (current.cutscenePlaying1 || current.cutscenePlaying2) && !old.cutscenePlaying1 && !old.cutscenePlaying2)
 		{
 			print("Split on finale");
 			return true;
