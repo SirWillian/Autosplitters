@@ -154,7 +154,7 @@ init
 	
 	print("Game main module size is " + modules.First().ModuleMemorySize.ToString());
 	
-	vars.VersionNewest= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x694D28, 7);
+	vars.VersionNewest= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x694D28, 6);
 	vars.Version2091= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x404EF8, 7);
 	vars.Version2075= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x404EF8, 7);
 	vars.Version2045= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x408738, 7);
@@ -188,7 +188,7 @@ init
 	{
 		if(vars.CurrentVersion=="")
 		{
-			if(vars.VersionNewest=="2.1.5.0")
+			if(vars.VersionNewest=="2.1.5.")
 				version="Newest";
 			else if(vars.Version2091=="2.0.9.1")
 				version="2.0.9.1";
