@@ -125,8 +125,8 @@ startup
 	settings.Add("cutscenelessStart", false, "Autostart on cutsceneless campaigns");
 	settings.SetToolTip("cutscenelessStart", "Uses a different method to detect when to autostart. Causes the splitter to autostart on every level");
 	
-	settings.Add("foxyStart", true, "New start logic");
-	settings.SetToolTip("foxyStart", "Use the new start logic. This should fix autostart for people which it wasn't working. Uncheck to revert to the old method.");
+	settings.Add("foxyStart2", false, "New start logic");
+	settings.SetToolTip("foxyStart2", "Use the new start logic. This should fix autostart for people which it wasn't working. Uncheck to revert to the old method.");
 	
 	settings.Add("alternateVersionCheck", false, "Manual version selection");
 	settings.SetToolTip("alternateVersionCheck", "Select the game version you are running manually. Leave this unchecked for automatic version selection.");
@@ -238,7 +238,7 @@ init
 
 start
 {
-	if (settings["foxyStart"])
+	if (settings["foxyStart2"])
 	{
 		// Once we have control after a cutscene plays for at least 1 second, we're ready to start.
 		if (current.hasControl && !current.gameLoading)
