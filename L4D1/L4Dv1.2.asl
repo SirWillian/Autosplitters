@@ -11,8 +11,8 @@ state("hl2")
 state("hl2", "1.0")
 {
 	bool     gameLoading      : "engine.dll", 0x5D1E6C;
-	bool     cutscenePlaying1 : "client.dll", 0x590AC4;
-	bool     cutscenePlaying2 : "client.dll", 0x590AC6;
+	bool     cutscenePlaying1 : "client.dll", 0x522954;
+	bool     cutscenePlaying2 : "client.dll", 0x522A50;
 	bool     scoreboardLoad   : "client.dll", 0x5900E9;
 	bool     hasControl       : "client.dll", 0x574950, 0x0C;
 }
@@ -20,8 +20,8 @@ state("hl2", "1.0")
 state("left4dead", "1.0")
 {
 	bool     gameLoading      : "engine.dll", 0x5D1E6C;
-	bool     cutscenePlaying1 : "client.dll", 0x590AC4;
-	bool     cutscenePlaying2 : "client.dll", 0x590AC6;
+	bool     cutscenePlaying1 : "client.dll", 0x522954;
+	bool     cutscenePlaying2 : "client.dll", 0x522A50;
 	bool     scoreboardLoad   : "client.dll", 0x5900E9;
 	bool     hasControl       : "client.dll", 0x574950, 0x0C;
 }
@@ -58,19 +58,11 @@ startup
 	settings.SetToolTip("version1005", "Make sure to check all the checkboxes above the game version you wanna run");
 	settings.Add("versionNewest", false, "Newest Version", "version1005");
 	
-	settings.Add("falsePositives", false, "Remove false positives");
-	settings.SetToolTip("falsePositives", "If the splitter splits randomly, try this setting.");
-	
-	settings.Add("betterStartDetection", true, "Better start detection");
-	settings.SetToolTip("betterStartDetection", "Polls the game more often when a run is not started, minor performance cost then, but resets to the regular value once it finds a start point.");
-	
 	settings.Add("debug", false, "See internal values through DebugView");
 	settings.SetToolTip("debug", "See the values that the splitter is using to make actions. Requires DebugView. This setting may cause additional lag, so only have this checked if needed.");
 	
 	vars.CurrentVersion="";
-	vars.RegularRefreshRate=30;
-	vars.StartRefreshRate=300;
-	refreshRate=vars.RegularRefreshRate;
+	refreshRate=30;
 }
 
 init
@@ -80,7 +72,7 @@ init
 	print("Game main module size is " + modules.First().ModuleMemorySize.ToString());
 	
 	vars.Version1005= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x40CF48, 7);
-	vars.Version1035= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x3E7304, 7);
+	vars.VersionNewest= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x3E7304, 6);
 	
 	print("Looking for game version...");
 	if(settings["alternateVersionCheck"])
@@ -97,7 +89,7 @@ init
 		{
 			if(vars.Version1005=="1.0.0.5")
 				version="1.0";
-			else if(vars.Version1035=="1.0.3.5")
+			else if(vars.VersionNewest=="1.0.3.")
 				version="Newest";
 			else
 				version="";
@@ -128,15 +120,6 @@ init
 
 start
 {
-	if(settings["betterStartDetection"])
-	{
-	    //increase the chance it of starting properly by bumping this up temporarily
-	    if(!vars.startRun)
-			refreshRate=vars.StartRefreshRate;	
-	    else
-			refreshRate=vars.RegularRefreshRate;
-	}
-	
 	if(settings["cutscenelessStart"] && old.gameLoading && !vars.startRun)
 	{
 		vars.startRun=true;
@@ -150,35 +133,18 @@ start
 		return true;
 	}
 	
-	if((!vars.startRun && old.gameLoading) && !current.gameLoading)
+	if(old.gameLoading && (current.cutscenePlaying1 || current.cutscenePlaying2) && !vars.startRun)
 	{
-	    //if the cutscene starts
-		if(current.cutscenePlaying1 || current.cutscenePlaying2)
-	    {
-            vars.startRun=true;
-		    print("Autostart triggered");			
-		       
-	    }
-		//if we load before the cutscene starts, remember it for when the cutscene starts
-	    else
-	    {   
-		    print("Loaded before cutscene, passing gameLoading on");
-		    current.gameLoading	= old.gameLoading;			    
-	    }	           		
-	}	
-	else if(vars.startRun)
+		vars.startRun=true;
+		print("Autostart triggered");
+	}
+	
+	else if(!current.gameLoading && (old.cutscenePlaying1 || old.cutscenePlaying2) && !current.cutscenePlaying1 && !current.cutscenePlaying2 && vars.startRun)
 	{
-	    //if we are loading and weren't already loading, there was an aborted start
-	    if(current.gameLoading && !old.gameLoading)
-			vars.startRun = false;
-		//if the cutscene just ended
-	    else if((old.cutscenePlaying1 || old.cutscenePlaying2) && !(current.cutscenePlaying1 || current.cutscenePlaying2))
-	    {
-		    vars.startRun=false;
-		    print("Run autostarted");
-		    return true;
-	    }
-	}	
+		vars.startRun=false;
+		print("Run autostarted");
+		return true;
+	}
 }
 
 split
@@ -244,20 +210,8 @@ update
 		"\n current.cutscenePlaying2 = " + current.cutscenePlaying2.ToString() +
 		"\n current.scoreboardLoad1 = " + current.scoreboardLoad.ToString() +
 		"\n current.hasControl = " + current.hasControl.ToString() +
-		"\n refreshRate = " + refreshRate.ToString() +
 		"\n vars.startRun = " + vars.startRun.ToString());
 	}
-	
-	//HUGE MEME
-	if(settings["falsePositives"])
-	{
-	    //if we are in control or both cutscene variables aren't set, ignore
-		if(current.hasControl || !(current.cutscenePlaying2 && current.cutscenePlaying1))
-		{
-			current.cutscenePlaying1 = false;
-			current.cutscenePlaying2 = false;
-		}
-    }
 	
 	if(version == "")
 		return false;
