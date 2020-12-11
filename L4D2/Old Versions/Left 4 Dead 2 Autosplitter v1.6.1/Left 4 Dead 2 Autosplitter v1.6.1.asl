@@ -68,22 +68,10 @@ state("left4dead2", "2.0.4.5")
 	bool     hasControl       : "client.dll", 0x715974;
 }
 
-state("left4dead2", "2.0.6.3")
-{
-	string32 whatsLoading     : "engine.dll", 0x5445D4;
-	bool     gameLoading      : "engine.dll", 0x5DA8CC;
-	bool     cutscenePlaying1 : "client.dll", 0x688C7C;
-	bool     cutscenePlaying2 : "client.dll", 0x688D90;
-	bool     finaleTrigger1   : "client.dll", 0x7091C8;
-	bool     finaleTrigger2   : "client.dll", 0x709504;
-	bool     scoreboardLoad1  : "client.dll", 0x6F74CD;
-	bool     scoreboardLoad2  : "client.dll", 0x716775;
-	bool     hasControl       : "client.dll", 0x6AB944;
-}
 
 state("left4dead2", "2.0.7.5")
 {
-	string32 whatsLoading     : "engine.dll", 0x5445D4;
+	string32 whatsLoading     : "engine.dll", 0x544490;
 	bool     gameLoading      : "engine.dll", 0x5DA8CC;
 	bool     cutscenePlaying1 : "client.dll", 0x688E14;
 	bool     cutscenePlaying2 : "client.dll", 0x688F28;
@@ -96,7 +84,7 @@ state("left4dead2", "2.0.7.5")
 
 state("left4dead2", "2.0.9.1")
 {
-	string32 whatsLoading     : "engine.dll", 0x5445D4;
+	string32 whatsLoading     : "engine.dll", 0x544490;
 	bool     gameLoading      : "engine.dll", 0x5E19D4;
 	bool     cutscenePlaying1 : "client.dll", 0x688E64;
 	bool     cutscenePlaying2 : "client.dll", 0x688F78;
@@ -107,56 +95,17 @@ state("left4dead2", "2.0.9.1")
 	bool     hasControl       : "client.dll", 0x717A0C;
 }
 
-state("left4dead2", "2.1.4.7")
+state("left4dead2", "Newest")
 {
 	string32 whatsLoading     : "engine.dll", 0x604A80;
 	bool     gameLoading      : "engine.dll", 0x46C54C;
-	bool     cutscenePlaying1 : "client.dll", 0x702D78;
-	bool     cutscenePlaying2 : "client.dll", 0x702C64;
-	bool     finaleTrigger1   : "client.dll", 0x787AD8;
-	bool     finaleTrigger2   : "client.dll", 0x787E14;
-	bool     scoreboardLoad1  : "client.dll", 0x795215;
-	bool     scoreboardLoad2  : "client.dll", 0x775AB5;
-	bool     hasControl       : "client.dll", 0x7962CC;
-}
-
-state("left4dead2", "2.2.0.3")
-{
-	string32 whatsLoading     : "engine.dll", 0x435240;
-	bool     gameLoading      : "engine.dll", 0x47264C;
-	bool     cutscenePlaying1 : "client.dll", 0x70F804;
-	bool     cutscenePlaying2 : "client.dll", 0x70F918;
-	bool     finaleTrigger1   : "client.dll", 0x794E98;
-	bool     finaleTrigger2   : "client.dll", 0x7951D4;
-	bool     scoreboardLoad1  : "client.dll", 0x782E55;
-	bool     scoreboardLoad2  : "client.dll", 0x7A2615;
-	bool     hasControl       : "client.dll", 0x73421C;
-}
-
-state("left4dead2", "2.2.0.7")
-{
-	string32 whatsLoading     : "engine.dll", 0x435240;
-	bool     gameLoading      : "engine.dll", 0x47264C;
-	bool     cutscenePlaying1 : "client.dll", 0x70F804;
-	bool     cutscenePlaying2 : "client.dll", 0x70F918;
-	bool     finaleTrigger1   : "client.dll", 0x795224;
-	bool     finaleTrigger2   : "client.dll", 0x794EE8;
-	bool     scoreboardLoad1  : "client.dll", 0x782EA5;
-	bool     scoreboardLoad2  : "client.dll", 0x7A2665;
-	bool     hasControl       : "client.dll", 0x73421C;
-}
-
-state("left4dead2", "2.2.0.9")
-{
-	string32 whatsLoading     : "engine.dll", 0x435240;
-	bool     gameLoading      : "engine.dll", 0x47264C;
-	bool     cutscenePlaying1 : "client.dll", 0x70F884;
-	bool     cutscenePlaying2 : "client.dll", 0x70F998;
-	bool     finaleTrigger1   : "client.dll", 0x7952A4;
-	bool     finaleTrigger2   : "client.dll", 0x794F68;
-	bool     scoreboardLoad1  : "client.dll", 0x782F25;
-	bool     scoreboardLoad2  : "client.dll", 0x7A29C5;
-	bool     hasControl       : "client.dll", 0x73429C;
+	bool     cutscenePlaying1 : "client.dll", 0x703D78;
+	bool     cutscenePlaying2 : "client.dll", 0x703C64;
+	bool     finaleTrigger1   : "client.dll", 0x788AD8;
+	bool     finaleTrigger2   : "client.dll", 0x788E14;
+	bool     scoreboardLoad1  : "client.dll", 0x796215;
+	bool     scoreboardLoad2  : "client.dll", 0x776AB5;
+	bool     hasControl       : "client.dll", 0x7972CC;
 }
 
 startup
@@ -171,8 +120,7 @@ startup
 	settings.Add("ILs", false, "Individual Levels", "splitOnce");
 	settings.SetToolTip("ILs","To select the category you are running, make sure you check all the checkboxes above it.");
 	settings.Add("mainCampaigns", false, "Main Campaigns","ILs");
-	settings.Add("allCampaignsLegacy", false, "All Campaigns Legacy","mainCampaigns");
-	settings.Add("allCampaigns", false, "All Campaigns (14)","allCampaignsLegacy");
+	settings.Add("allCampaigns", false, "All Campaigns","mainCampaigns");
 	
 	settings.Add("cutscenelessStart", false, "Autostart on cutsceneless campaigns");
 	settings.SetToolTip("cutscenelessStart", "Uses a different method to detect when to autostart. Causes the splitter to autostart on every level");
@@ -185,28 +133,12 @@ startup
 	settings.Add("version2000", false, "Version 2.0.0.0", "alternateVersionCheck");
 	settings.SetToolTip("version2000", "Make sure to check all the checkboxes above the game version you wanna run");
 	settings.Add("version2008", false, "Version 2.0.0.8", "version2000");
-	settings.SetToolTip("version2008", "Deprecated alternative to 2.0.0.0, no longer used");
 	settings.Add("version2012", false, "Version 2.0.1.2", "version2008");
-	settings.SetToolTip("version2012", "The Passing ILs");
 	settings.Add("version2027", false, "Version 2.0.2.7", "version2012");
-	settings.SetToolTip("version2027", "Deprecated alternative to 2045, no longer used");
 	settings.Add("version2045", false, "Version 2.0.4.5", "version2027");
-	settings.SetToolTip("version2045", "Main Campaigns Co-Op & No Mercy ILs");
-	settings.Add("version2063", false, "Version 2.0.6.3", "version2045");
-	settings.SetToolTip("version2063", "Oldest Cold Stream Beta, currently not a usable version in runs");
-	settings.Add("version2075", false, "Version 2.0.7.5", "version2063");
-	settings.SetToolTip("version2075", "Dead Air & Cold Stream ILs");
+	settings.Add("version2075", false, "Version 2.0.7.5", "version2045");
 	settings.Add("version2091", false, "Version 2.0.9.1", "version2075");
-	settings.SetToolTip("version2091", "All Campaigns Legacy");
-	settings.Add("version2147", false, "Version 2.1.4.7", "version2091");
-	settings.SetToolTip("version2147", "Crash Course and The Sacrifice ILs, comparable to L4D2 pre TLS update");
-	settings.Add("version2203", false, "Version 2.2.0.3", "version2147");
-	settings.SetToolTip("version2203", "The Last Stand Solo ER and Co-Op");
-	settings.Add("version2207", false, "Version 2.2.0.7", "version2203");
-	settings.SetToolTip("version2207", "Older RocketDude mutation version");
-	settings.Add("version2209", false, "Version 2.2.0.9", "version2207");
-	settings.SetToolTip("version2209", "Newest as of Dec 8th 2020");
-
+	settings.Add("versionNewest", false, "Newest Version", "version2091");
 	
 	settings.Add("debug", false, "See internal values through DebugView");
 	settings.SetToolTip("debug", "See the values that the splitter is using to make actions. Requires DebugView. This setting may cause additional lag, so only have this checked if needed.");
@@ -225,13 +157,9 @@ init
 	
 	print("Game main module size is " + modules.First().ModuleMemorySize.ToString());
 	
-	vars.Version2209= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x69AF50, 7);
-	vars.Version2207= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x69AF50, 7);
-	vars.Version2203= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x69AF50, 7);
-	vars.Version2147= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x694D28, 7);
+	vars.VersionNewest= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x694D28, 6);
 	vars.Version2091= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x404EF8, 7);
 	vars.Version2075= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x404EF8, 7);
-	vars.Version2063= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x404EF8, 7);
 	vars.Version2045= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x408738, 7);
 	vars.Version2027= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x405558, 7);
 	vars.Version2012= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x4034F8, 7);
@@ -241,20 +169,12 @@ init
 	print("Looking for game version...");
 	if(settings["alternateVersionCheck"])
 	{
-		if(settings["version2209"])
-			version="2.2.0.9";
-		else if(settings["version2207"])
-			version="2.2.0.7";
-		else if(settings["version2203"])
-			version="2.2.0.3";
-		else if(settings["version2147"])
-			version="2.1.4.7";
+		if(settings["versionNewest"])
+			version="Newest";
 		else if(settings["version2091"])
 			version="2.0.9.1";
 		else if(settings["version2075"])
 			version="2.0.7.5";
-		else if(settings["version2063"])
-			version="2.0.6.3";
 		else if(settings["version2045"])
 			version="2.0.4.5";
 		else if(settings["version2027"])
@@ -271,20 +191,12 @@ init
 	{
 		if(vars.CurrentVersion=="")
 		{
-			if(vars.Version2209=="2.2.0.9")
-				version="2.2.0.9";
-			else if(vars.Version2207=="2.2.0.7")
-				version="2.2.0.7";
-			else if(vars.Version2203=="2.2.0.3")
-				version="2.2.0.3";
-			else if(vars.Version2147=="2.1.4.7")
-				version="2.1.4.7";
+			if(vars.VersionNewest=="2.1.5.")
+				version="Newest";
 			else if(vars.Version2091=="2.0.9.1")
 				version="2.0.9.1";
 			else if(vars.Version2075=="2.0.7.5")
 				version="2.0.7.5";
-			else if(vars.Version2075=="2.0.6.3")
-				version="2.0.6.3";
 			else if(vars.Version2045=="2.0.4.5")
 				version="2.0.4.5";
 			else if(vars.Version2027=="2.0.2.7")
@@ -309,8 +221,6 @@ init
 	
 	vars.campaignsCompleted=0;
 	if(settings["allCampaigns"])
-		vars.totalCampaignNumber=14;
-	else if (settings["allCampaignsLegacy"])
 		vars.totalCampaignNumber=13;
 	else if (settings["mainCampaigns"])
 		vars.totalCampaignNumber=5;
@@ -324,7 +234,6 @@ init
 	
 	vars.startRun=false;
 	vars.cutsceneStart = DateTime.MaxValue;
-	vars.lastSplit=null;
 }
 
 start
@@ -338,7 +247,6 @@ start
 			{
 				print("CUSTSCENE RAN FOR " + (DateTime.Now - vars.cutsceneStart));
 				vars.cutsceneStart = DateTime.MaxValue;
-				vars.lastSplit=null;
 				return true;
 			}
 			else if (!settings["cutscenelessStart"] && vars.cutsceneStart != DateTime.MaxValue)
@@ -370,7 +278,6 @@ start
 		{
 			vars.startRun=false;
 			print("Run autostarted");
-			vars.lastSplit=null;
 			return true;
 		}
 		
@@ -384,7 +291,6 @@ start
 		{
 			vars.startRun=false;
 			print("Run autostarted");
-			vars.lastSplit=null;
 			return true;
 		}
 	}
@@ -397,24 +303,12 @@ split
 	{
 		if((current.finaleTrigger1 || current.finaleTrigger2) && !old.finaleTrigger1 && !old.finaleTrigger2)
 		{
-			if(current.whatsLoading == vars.lastSplit)
-			{
-				print("Ceased double split attempt");
-				return false;
-			}
 			print("Split on finale");
-			vars.lastSplit = current.whatsLoading;
 			return true;
 		}
-		else if((current.cutscenePlaying1 || current.cutscenePlaying2) && !old.cutscenePlaying1 && !old.cutscenePlaying2 && (current.whatsLoading == "c7m3_port" || current.whatsLoading == "c5m5_bridge" || current.whatsLoading == "c6m3_port" || current.whatsLoading == "c13m4_cutthroatcreek"))
+		else if((current.cutscenePlaying1 || current.cutscenePlaying2) && !old.cutscenePlaying1 && !old.cutscenePlaying2 && (current.whatsLoading == "c7m3_port" || current.whatsLoading == "c5m5_bridge" || current.whatsLoading == "c6m3_port"))
 		{
-			if(current.whatsLoading == vars.lastSplit)
-			{
-				print("Ceased double split attempt");
-				return false;
-			}
 			print("Split on THE BEST CAMPAIGN EVER");
-			vars.lastSplit = current.whatsLoading;
 			return true;
 		}
 		//Split inbetween chapters
@@ -425,7 +319,6 @@ split
 				if(!current.finaleTrigger1 && !current.finaleTrigger2 && !old.scoreboardLoad1 && !old.scoreboardLoad2 && (current.scoreboardLoad1 || current.scoreboardLoad2))
 				{
 					print("Split at the end of a chapter at the scoreboard");
-					vars.lastSplit = current.whatsLoading; // should help prevent finale split failure if user's timer doesn't start automatically
 					return true;
 				}
 			}
@@ -434,7 +327,6 @@ split
 				if(!current.finaleTrigger1 && !current.finaleTrigger2 && !old.gameLoading && current.gameLoading && (current.scoreboardLoad1 || current.scoreboardLoad2))
 				{
 					print("Split at the end of a chapter when it began to load");
-					vars.lastSplit = current.whatsLoading; // should help prevent finale split failure if user's timer doesn't start automatically
 					return true;
 				}
 			}
@@ -447,23 +339,11 @@ split
 	{
 		if((current.finaleTrigger1 || current.finaleTrigger2) && !old.finaleTrigger1 && !old.finaleTrigger2)
 		{
-			if(current.whatsLoading == vars.lastSplit)
-			{
-				print("Ceased double split attempt");
-				return false;
-			}
-			vars.lastSplit = current.whatsLoading;
 			vars.campaignsCompleted++;
 			print("Campaign count is now " + vars.campaignsCompleted.ToString());
 		}
-		else if((current.cutscenePlaying1 || current.cutscenePlaying2) && !old.cutscenePlaying1 && !old.cutscenePlaying2 && (current.whatsLoading == "c7m3_port" || current.whatsLoading == "c5m5_bridge" || current.whatsLoading == "c6m3_port"  || current.whatsLoading == "c13m4_cutthroatcreek"))
+		else if((current.cutscenePlaying1 || current.cutscenePlaying2) && !old.cutscenePlaying1 && !old.cutscenePlaying2 && (current.whatsLoading == "c7m3_port" || current.whatsLoading == "c5m5_bridge" || current.whatsLoading == "c6m3_port"))
 		{
-			if(current.whatsLoading == vars.lastSplit)
-			{
-				print("Ceased double split attempt");
-				return false;
-			}
-			vars.lastSplit = current.whatsLoading;
 			vars.campaignsCompleted++;
 			print("Finished THE BEST CAMPAIGN EVER and the campaign sum is now " + vars.campaignsCompleted.ToString());
 		}
