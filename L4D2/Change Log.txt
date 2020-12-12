@@ -1,7 +1,7 @@
 /===============================================/
 /=====================v1.7======================/
 /===============================================/
-12/11/2020 (ImAciidz)
+11/12/2020 (ImAciidz)
 -Added double splitting prevention for finales
 -Readded support for version 2.1.4.7
 -Added support for version 2.0.6.3
