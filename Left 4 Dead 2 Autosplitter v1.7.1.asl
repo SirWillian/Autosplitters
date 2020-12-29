@@ -271,7 +271,7 @@ init
 	{
 		if(vars.CurrentVersion=="")
 		{
-			if(vars.Version2209=="2.2.1.1")
+			if(vars.Version2211=="2.2.1.1")
 				version="2.2.1.1";
 			else if(vars.Version2207=="2.2.0.7")
 				version="2.2.0.7";
