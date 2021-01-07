@@ -1,19 +1,13 @@
 /===============================================/
-/=====================v1.7.1====================/
+/=====================v1.7======================/
 /===============================================/
 18/12/2020 (ImAciidz)
 -Added support for version 2.2.1.1, removed support for 2.2.0.9
-
-/===============================================/
-/=====================v1.7======================/
-/===============================================/
 11/12/2020 (ImAciidz)
 -Added double splitting prevention for finales
 -Readded support for version 2.1.4.7
 -Added support for version 2.0.6.3
 -Added support for The Last Stand versions 2.2.0.3, 2.2.0.7, and 2.2.0.9
--Changed "whatsLoading" variable offset for 2.0.7.5 & 2.0.9.1 as I discovered it changed dynamically during the level load as various level objects were loaded in. Likely will not affect anything, my main motivation for changing this was just because the variables selected for other versions stayed static during level loading
--Added Cold Stream finale to the "broken finales" portion of the finale to allow it to split on RocketDude
 
 /===============================================/
 /=====================v1.6.1====================/
