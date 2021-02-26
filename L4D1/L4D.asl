@@ -37,6 +37,7 @@ state("left4dead", "Newest")
 
 startup
 {
+	settings.Add("AutomaticGameTime", true, "Automatically set splits to Game Time");
 	settings.Add("campaignSplit", true, "Split after each campaign");
 	settings.Add("chapterSplit", true, "Split inbetween chapters", "campaignSplit");
 	settings.Add("scoreboardVSgameLoading", true, "Split chapters on Scoreboard vs Game Loading", "chapterSplit");
@@ -120,6 +121,10 @@ init
 
 start
 {
+	if (settings["AutomaticGameTime"])
+	{
+		timer.CurrentTimingMethod = TimingMethod.GameTime;
+	}
 	if(settings["cutscenelessStart"] && old.gameLoading && !vars.startRun)
 	{
 		vars.startRun=true;
