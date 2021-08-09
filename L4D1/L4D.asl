@@ -28,11 +28,11 @@ state("left4dead", "1.0")
 
 state("left4dead", "Newest")
 {
-	bool     gameLoading      : "engine.dll", 0x5AB994;
-	bool     cutscenePlaying1 : "client.dll", 0x545C14;
-	bool     cutscenePlaying2 : "client.dll", 0x545D14;
-	bool     scoreboardLoad   : "client.dll", 0x5B3E91;
-	bool     hasControl       : "client.dll", 0x5B3E94, 0x0C;
+	bool     gameLoading      : "engine.dll", 0x5A79A4;
+	bool     cutscenePlaying1 : "client.dll", 0x546C14;
+	bool     cutscenePlaying2 : "client.dll", 0x546D14;
+	bool     scoreboardLoad   : "client.dll", 0x5B4E91;
+	bool     hasControl       : "client.dll", 0x5B4E94, 0x0C;
 }
 
 startup
@@ -73,7 +73,7 @@ init
 	print("Game main module size is " + modules.First().ModuleMemorySize.ToString());
 	
 	vars.Version1005= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x40CF48, 7);
-	vars.VersionNewest= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x3E7304, 6);
+	vars.VersionNewest= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x3E3334, 6);
 	
 	print("Looking for game version...");
 	if(settings["alternateVersionCheck"])
@@ -90,7 +90,7 @@ init
 		{
 			if(vars.Version1005=="1.0.0.5")
 				version="1.0";
-			else if(vars.VersionNewest=="1.0.3.")
+			else if(vars.VersionNewest=="1.0.4.")
 				version="Newest";
 			else
 				version="";
