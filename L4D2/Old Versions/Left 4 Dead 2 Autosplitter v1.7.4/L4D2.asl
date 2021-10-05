@@ -120,20 +120,6 @@ state("left4dead2", "2.1.4.7")
 	bool     hasControl       : "client.dll", 0x7962CC;
 }
 
-state("left4dead2", "2.1.5.5")
-{
-	string32 whatsLoading     : "engine.dll", 0x604A80;
-	bool     gameLoading      : "engine.dll", 0x46C54C;
-	bool     cutscenePlaying1 : "client.dll", 0x703D78;
-	bool     cutscenePlaying2 : "client.dll", 0x703C64;
-	bool     finaleTrigger1   : "client.dll", 0x788AD8;
-	bool     finaleTrigger2   : "client.dll", 0x788E14;
-	bool     scoreboardLoad1  : "client.dll", 0x796215;
-	bool     scoreboardLoad2  : "client.dll", 0x776AB5;
-	bool     hasControl       : "client.dll", 0x7972CC;
-}
-
-
 state("left4dead2", "2.2.0.3")
 {
 	string32 whatsLoading     : "engine.dll", 0x435240;
@@ -160,7 +146,7 @@ state("left4dead2", "2.2.0.7")
 	bool     hasControl       : "client.dll", 0x73421C;
 }
 
-state("left4dead2", "2.2.2.1")
+state("left4dead2", "2.2.2.0")
 {
 	string32 whatsLoading     : "engine.dll", 0x4302A8;
 	bool     gameLoading      : "engine.dll", 0x46D64C;
@@ -169,7 +155,7 @@ state("left4dead2", "2.2.2.1")
 	bool     finaleTrigger1   : "client.dll", 0x7A62A4;
 	bool     finaleTrigger2   : "client.dll", 0x7A5F68;
 	bool     scoreboardLoad1  : "client.dll", 0x793F2D;
-	bool     scoreboardLoad2  : "client.dll", 0x7B3B0D;
+	bool     scoreboardLoad2  : "client.dll", 0x7B3AC5;
 	bool     hasControl       : "client.dll", 0x74531C;
 }
 
@@ -204,25 +190,23 @@ startup
 	settings.Add("version2012", false, "Version 2.0.1.2", "version2008");
 	settings.SetToolTip("version2012", "The Passing ILs");
 	settings.Add("version2027", false, "Version 2.0.2.7", "version2012");
-	settings.SetToolTip("version2027", "Deprecated alternative to 2045, best for Passing Co-op");
+	settings.SetToolTip("version2027", "Deprecated alternative to 2045, no longer used");
 	settings.Add("version2045", false, "Version 2.0.4.5", "version2027");
 	settings.SetToolTip("version2045", "Main Campaigns Co-Op & No Mercy ILs");
 	settings.Add("version2063", false, "Version 2.0.6.3", "version2045");
-	settings.SetToolTip("version2063", "Oldest Cold Stream Beta, currently not legal version for runs");
+	settings.SetToolTip("version2063", "Oldest Cold Stream Beta, currently not a usable version in runs");
 	settings.Add("version2075", false, "Version 2.0.7.5", "version2063");
 	settings.SetToolTip("version2075", "Dead Air & Cold Stream ILs");
 	settings.Add("version2091", false, "Version 2.0.9.1", "version2075");
 	settings.SetToolTip("version2091", "All Campaigns Legacy");
 	settings.Add("version2147", false, "Version 2.1.4.7", "version2091");
 	settings.SetToolTip("version2147", "Crash Course and The Sacrifice ILs, comparable to L4D2 pre TLS update");
-	settings.Add("version2155", false, "Version 2.1.5.5", "version2147");
-	settings.SetToolTip("version2155", "Final version before TLS update, but 2.1.4.7 is preferred");
-	settings.Add("version2203", false, "Version 2.2.0.3", "version2155");
+	settings.Add("version2203", false, "Version 2.2.0.3", "version2147");
 	settings.SetToolTip("version2203", "The Last Stand Solo ER and Co-Op");
 	settings.Add("version2207", false, "Version 2.2.0.7", "version2203");
 	settings.SetToolTip("version2207", "Older RocketDude mutation version");
-	settings.Add("version2221", false, "Version 2.2.2.1", "version2207");
-	settings.SetToolTip("version2221", "Newest as of October 4 2021");
+	settings.Add("version2220", false, "Version 2.2.2.0", "version2207");
+	settings.SetToolTip("version2220", "Newest as of July 8 2021");
 
 	
 	settings.Add("debug", false, "See internal values through DebugView");
@@ -242,10 +226,9 @@ init
 	
 	print("Game main module size is " + modules.First().ModuleMemorySize.ToString());
 	
-	vars.Version2221= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x695EF8, 7);
+	vars.Version2220= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x695EF8, 7);
 	vars.Version2207= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x69AF50, 7);
 	vars.Version2203= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x69AF50, 7);
-	vars.Version2155= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x694D28, 7);
 	vars.Version2147= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x694D28, 7);
 	vars.Version2091= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x404EF8, 7);
 	vars.Version2075= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x404EF8, 7);
@@ -259,14 +242,12 @@ init
 	print("Looking for game version...");
 	if(settings["alternateVersionCheck"])
 	{
-		if(settings["version2221"])
-			version="2.2.2.1";
+		if(settings["version2220"])
+			version="2.2.2.0";
 		else if(settings["version2207"])
 			version="2.2.0.7";
 		else if(settings["version2203"])
 			version="2.2.0.3";
-		else if(settings["version2155"])
-			version="2.1.5.5";
 		else if(settings["version2147"])
 			version="2.1.4.7";
 		else if(settings["version2091"])
@@ -291,14 +272,12 @@ init
 	{
 		if(vars.CurrentVersion=="")
 		{
-			if(vars.Version2221=="2.2.2.1")
-				version="2.2.2.1";
+			if(vars.Version2220=="2.2.2.0")
+				version="2.2.2.0";
 			else if(vars.Version2207=="2.2.0.7")
 				version="2.2.0.7";
 			else if(vars.Version2203=="2.2.0.3")
 				version="2.2.0.3";
-			else if(vars.Version2155=="2.1.5.5")
-				version="2.1.5.5";
 			else if(vars.Version2147=="2.1.4.7")
 				version="2.1.4.7";
 			else if(vars.Version2091=="2.0.9.1")
