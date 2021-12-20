@@ -3,547 +3,527 @@ state("left4dead2", "")
 
 }
 
-state("left4dead2", "2.0.0.0")
-{
-	string32 whatsLoading     : "engine.dll", 0x53EC90;
-	bool     gameLoading      : "engine.dll", 0x5CC89C;
-	bool     cutscenePlaying1 : "client.dll", 0x66CEEC;
-	bool     cutscenePlaying2 : "client.dll", 0x66D000;
-	bool     finaleTrigger1   : "client.dll", 0x6ED110;
-	bool     finaleTrigger2   : "client.dll", 0x6ED110;
-	bool     scoreboardLoad1  : "client.dll", 0x6DB58D;
-	bool     scoreboardLoad2  : "client.dll", 0x6FA215;
-	bool     hasControl       : "client.dll", 0x68FBD4;
-}
-
-state("left4dead2", "2.0.0.8")
-{
-	string32 whatsLoading     : "engine.dll", 0x53EC90;
-	bool     gameLoading      : "engine.dll", 0x5CC89C;
-	bool     cutscenePlaying1 : "client.dll", 0x66D000;
-	bool     cutscenePlaying2 : "client.dll", 0x66CEEC;
-	bool     finaleTrigger1   : "client.dll", 0x6ED110;
-	bool     finaleTrigger2   : "client.dll", 0x6ED110;
-	bool     scoreboardLoad1  : "client.dll", 0x6FA215;
-	bool     scoreboardLoad2  : "client.dll", 0x6DB58D;
-	bool     hasControl       : "client.dll", 0x6FB304;
-}
-
-state("left4dead2", "2.0.1.2")
-{
-	string32 whatsLoading     : "engine.dll", 0x542D10;
-	bool     gameLoading      : "engine.dll", 0x5D091C;
-	bool     cutscenePlaying1 : "client.dll", 0x67647C;
-	bool     cutscenePlaying2 : "client.dll", 0x676590;
-	bool     finaleTrigger1   : "client.dll", 0x6F6810;
-	bool     finaleTrigger2   : "client.dll", 0x6F6B14;
-	bool     scoreboardLoad1  : "client.dll", 0x6E4C85;
-	bool     scoreboardLoad2  : "client.dll", 0x703B35;
-	bool     hasControl       : "client.dll", 0x704C24;
-}
-
-state("left4dead2", "2.0.2.7")
-{
-	string32 whatsLoading     : "engine.dll", 0x544D10;
-	bool     gameLoading      : "engine.dll", 0x5D291C;
-	bool     cutscenePlaying1 : "client.dll", 0x676698;
-	bool     cutscenePlaying2 : "client.dll", 0x676584;
-	bool     finaleTrigger1   : "client.dll", 0x6F68F0;
-	bool     finaleTrigger2   : "client.dll", 0x6F6BF4;
-	bool     scoreboardLoad1  : "client.dll", 0x703C15;
-	bool     scoreboardLoad2  : "client.dll", 0x6E4D6D;
-	bool     hasControl       : "client.dll", 0x704D04;
-}
-
-state("left4dead2", "2.0.4.5")
-{
-	string32 whatsLoading     : "engine.dll", 0x547F90;
-	bool     gameLoading      : "engine.dll", 0x5DE494;
-	bool     cutscenePlaying1 : "client.dll", 0x686F7C;
-	bool     cutscenePlaying2 : "client.dll", 0x687090;
-	bool     finaleTrigger1   : "client.dll", 0x7074E8;
-	bool     finaleTrigger2   : "client.dll", 0x707824;
-	bool     scoreboardLoad1  : "client.dll", 0x6F57BD;
-	bool     scoreboardLoad2  : "client.dll", 0x714885;
-	bool     hasControl       : "client.dll", 0x715974;
-}
-
-state("left4dead2", "2.0.6.3")
-{
-	string32 whatsLoading     : "engine.dll", 0x544490;
-	bool     gameLoading      : "engine.dll", 0x5DA8CC;
-	bool     cutscenePlaying1 : "client.dll", 0x688C7C;
-	bool     cutscenePlaying2 : "client.dll", 0x688D90;
-	bool     finaleTrigger1   : "client.dll", 0x7091C8;
-	bool     finaleTrigger2   : "client.dll", 0x709504;
-	bool     scoreboardLoad1  : "client.dll", 0x6F74CD;
-	bool     scoreboardLoad2  : "client.dll", 0x716775;
-	bool     hasControl       : "client.dll", 0x6AB944;
-}
-
-state("left4dead2", "2.0.7.5")
-{
-	string32 whatsLoading     : "engine.dll", 0x544490;
-	bool     gameLoading      : "engine.dll", 0x5DA8CC;
-	bool     cutscenePlaying1 : "client.dll", 0x688E14;
-	bool     cutscenePlaying2 : "client.dll", 0x688F28;
-	bool     finaleTrigger1   : "client.dll", 0x7092F8;
-	bool     finaleTrigger2   : "client.dll", 0x709634;
-	bool     scoreboardLoad1  : "client.dll", 0x6F761D;
-	bool     scoreboardLoad2  : "client.dll", 0x7168A5;
-	bool     hasControl       : "client.dll", 0x717994;
-}
-
-state("left4dead2", "2.0.9.1")
-{
-	string32 whatsLoading     : "engine.dll", 0x544490;
-	bool     gameLoading      : "engine.dll", 0x5E19D4;
-	bool     cutscenePlaying1 : "client.dll", 0x688E64;
-	bool     cutscenePlaying2 : "client.dll", 0x688F78;
-	bool     finaleTrigger1   : "client.dll", 0x709370;
-	bool     finaleTrigger2   : "client.dll", 0x7096AC;
-	bool     scoreboardLoad1  : "client.dll", 0x6F7685;
-	bool     scoreboardLoad2  : "client.dll", 0x71691D;
-	bool     hasControl       : "client.dll", 0x717A0C;
-}
-
-state("left4dead2", "2.1.4.7")
-{
-	string32 whatsLoading     : "engine.dll", 0x604A80;
-	bool     gameLoading      : "engine.dll", 0x46C54C;
-	bool     cutscenePlaying1 : "client.dll", 0x702D78;
-	bool     cutscenePlaying2 : "client.dll", 0x702C64;
-	bool     finaleTrigger1   : "client.dll", 0x787AD8;
-	bool     finaleTrigger2   : "client.dll", 0x787E14;
-	bool     scoreboardLoad1  : "client.dll", 0x795215;
-	bool     scoreboardLoad2  : "client.dll", 0x775AB5;
-	bool     hasControl       : "client.dll", 0x7962CC;
-}
-
-state("left4dead2", "2.1.5.5")
-{
-	string32 whatsLoading     : "engine.dll", 0x604A80;
-	bool     gameLoading      : "engine.dll", 0x46C54C;
-	bool     cutscenePlaying1 : "client.dll", 0x703D78;
-	bool     cutscenePlaying2 : "client.dll", 0x703C64;
-	bool     finaleTrigger1   : "client.dll", 0x788AD8;
-	bool     finaleTrigger2   : "client.dll", 0x788E14;
-	bool     scoreboardLoad1  : "client.dll", 0x796215;
-	bool     scoreboardLoad2  : "client.dll", 0x776AB5;
-	bool     hasControl       : "client.dll", 0x7972CC;
-}
-
-
-state("left4dead2", "2.2.0.3")
-{
-	string32 whatsLoading     : "engine.dll", 0x435240;
-	bool     gameLoading      : "engine.dll", 0x47264C;
-	bool     cutscenePlaying1 : "client.dll", 0x70F804;
-	bool     cutscenePlaying2 : "client.dll", 0x70F918;
-	bool     finaleTrigger1   : "client.dll", 0x794E98;
-	bool     finaleTrigger2   : "client.dll", 0x7951D4;
-	bool     scoreboardLoad1  : "client.dll", 0x782E55;
-	bool     scoreboardLoad2  : "client.dll", 0x7A2615;
-	bool     hasControl       : "client.dll", 0x73421C;
-}
-
-state("left4dead2", "2.2.0.7")
-{
-	string32 whatsLoading     : "engine.dll", 0x435240;
-	bool     gameLoading      : "engine.dll", 0x47264C;
-	bool     cutscenePlaying1 : "client.dll", 0x70F804;
-	bool     cutscenePlaying2 : "client.dll", 0x70F918;
-	bool     finaleTrigger1   : "client.dll", 0x795224;
-	bool     finaleTrigger2   : "client.dll", 0x794EE8;
-	bool     scoreboardLoad1  : "client.dll", 0x782EA5;
-	bool     scoreboardLoad2  : "client.dll", 0x7A2665;
-	bool     hasControl       : "client.dll", 0x73421C;
-}
-
-state("left4dead2", "2.2.2.1")
-{
-	string32 whatsLoading     : "engine.dll", 0x4302A8;
-	bool     gameLoading      : "engine.dll", 0x46D64C;
-	bool     cutscenePlaying1 : "client.dll", 0x720904;
-	bool     cutscenePlaying2 : "client.dll", 0x720A18;
-	bool     finaleTrigger1   : "client.dll", 0x7A62A4;
-	bool     finaleTrigger2   : "client.dll", 0x7A5F68;
-	bool     scoreboardLoad1  : "client.dll", 0x793F2D;
-	bool     scoreboardLoad2  : "client.dll", 0x7B3B0D;
-	bool     hasControl       : "client.dll", 0x74531C;
-}
-
 startup
 {
-	settings.Add("AutomaticGameTime", true, "Automatically set splits to Game Time");
-	settings.Add("campaignSplit", true, "Split after each campaign");
-	settings.Add("chapterSplit", true, "Split inbetween chapters", "campaignSplit");
-	settings.Add("scoreboardVSgameLoading", true, "Split chapters on Scoreboard vs Game Loading", "chapterSplit");
-	settings.SetToolTip("scoreboardVSgameLoading", "Toggle between splitting chapters when the scoreboard shows up (checked) and when the loading between chapters begins (unchecked).");
-	
-	settings.Add("splitOnce", false, "Split only when the run ends");
-	settings.SetToolTip("splitOnce","These checkboxes only matter if you didn't check \"Split after each campaign\". They indicate what category you are running.");
-	settings.Add("ILs", false, "Individual Levels", "splitOnce");
-	settings.SetToolTip("ILs","To select the category you are running, make sure you check all the checkboxes above it.");
-	settings.Add("mainCampaigns", false, "Main Campaigns","ILs");
-	settings.Add("allCampaignsLegacy", false, "All Campaigns Legacy","mainCampaigns");
-	settings.Add("allCampaigns", false, "All Campaigns (14)","allCampaignsLegacy");
-	
-	settings.Add("cutscenelessStart", false, "Autostart on cutsceneless campaigns");
-	settings.SetToolTip("cutscenelessStart", "Uses a different method to detect when to autostart. Causes the splitter to autostart on every level");
-	
-	settings.Add("foxyStart2", false, "New start logic");
-	settings.SetToolTip("foxyStart2", "Use the new start logic. This should fix autostart for people which it wasn't working. Uncheck to revert to the old method.");
-	
-	settings.Add("alternateVersionCheck", false, "Manual version selection");
-	settings.SetToolTip("alternateVersionCheck", "Select the game version you are running manually. Leave this unchecked for automatic version selection.");
-	settings.Add("version2000", false, "Version 2.0.0.0", "alternateVersionCheck");
-	settings.SetToolTip("version2000", "Make sure to check all the checkboxes above the game version you wanna run");
-	settings.Add("version2008", false, "Version 2.0.0.8", "version2000");
-	settings.SetToolTip("version2008", "Deprecated alternative to 2.0.0.0, no longer used");
-	settings.Add("version2012", false, "Version 2.0.1.2", "version2008");
-	settings.SetToolTip("version2012", "The Passing ILs");
-	settings.Add("version2027", false, "Version 2.0.2.7", "version2012");
-	settings.SetToolTip("version2027", "Deprecated alternative to 2045, best for Passing Co-op");
-	settings.Add("version2045", false, "Version 2.0.4.5", "version2027");
-	settings.SetToolTip("version2045", "Main Campaigns Co-Op & No Mercy ILs");
-	settings.Add("version2063", false, "Version 2.0.6.3", "version2045");
-	settings.SetToolTip("version2063", "Oldest Cold Stream Beta, currently not legal version for runs");
-	settings.Add("version2075", false, "Version 2.0.7.5", "version2063");
-	settings.SetToolTip("version2075", "Dead Air & Cold Stream ILs");
-	settings.Add("version2091", false, "Version 2.0.9.1", "version2075");
-	settings.SetToolTip("version2091", "All Campaigns Legacy");
-	settings.Add("version2147", false, "Version 2.1.4.7", "version2091");
-	settings.SetToolTip("version2147", "Crash Course and The Sacrifice ILs, comparable to L4D2 pre TLS update");
-	settings.Add("version2155", false, "Version 2.1.5.5", "version2147");
-	settings.SetToolTip("version2155", "Final version before TLS update, but 2.1.4.7 is preferred");
-	settings.Add("version2203", false, "Version 2.2.0.3", "version2155");
-	settings.SetToolTip("version2203", "The Last Stand Solo ER and Co-Op");
-	settings.Add("version2207", false, "Version 2.2.0.7", "version2203");
-	settings.SetToolTip("version2207", "Older RocketDude mutation version");
-	settings.Add("version2221", false, "Version 2.2.2.1", "version2207");
-	settings.SetToolTip("version2221", "Newest as of October 4 2021");
+    settings.Add("AutomaticGameTime", true, "Automatically set splits to Game Time");
+    settings.Add("campaignSplit", true, "Split after each campaign");
+    settings.Add("chapterSplit", true, "Split inbetween chapters", "campaignSplit");
+    settings.Add("scoreboardVSgameLoading", true, "Split chapters on Scoreboard vs Game Loading", "chapterSplit");
+    settings.SetToolTip("scoreboardVSgameLoading", "Toggle between splitting chapters when the scoreboard shows up (checked) and when the loading between chapters begins (unchecked).");
+    
+    settings.Add("splitOnce", false, "Split only when the run ends");
+    settings.SetToolTip("splitOnce","These checkboxes only matter if you didn't check \"Split after each campaign\". They indicate what category you are running.");
+    settings.Add("ILs", false, "Individual Levels", "splitOnce");
+    settings.SetToolTip("ILs","To select the category you are running, make sure you check all the checkboxes above it.");
+    settings.Add("mainCampaigns", false, "Main Campaigns","ILs");
+    settings.Add("allCampaignsLegacy", false, "All Campaigns Legacy","mainCampaigns");
+    settings.Add("allCampaigns", false, "All Campaigns (14)","allCampaignsLegacy");
+    
+    settings.Add("cutscenelessStart", false, "Autostart on cutsceneless campaigns");
+    settings.SetToolTip("cutscenelessStart", "Uses a different method to detect when to autostart. Causes the splitter to autostart on every level");
+    
+    settings.Add("foxyStart2", false, "New start logic");
+    settings.SetToolTip("foxyStart2", "Use the new start logic. This should fix autostart for people which it wasn't working. Uncheck to revert to the old method.");
+        
+    /*
+    settings.Add("debug", false, "See internal values through DebugView");
+    settings.SetToolTip("debug", "See the values that the splitter is using to make actions. Requires DebugView. This setting may cause additional lag, so only have this checked if needed.");
 
-	
-	settings.Add("debug", false, "See internal values through DebugView");
-	settings.SetToolTip("debug", "See the values that the splitter is using to make actions. Requires DebugView. This setting may cause additional lag, so only have this checked if needed.");
-	
-	settings.CurrentDefaultParent = "debug";
-	settings.Add("debugStart", false, "See values referring to autostart");
-	settings.Add("debugSplit", false, "See values referring to autosplit");
-	
-	vars.CurrentVersion="";
-	refreshRate=30;
+    settings.CurrentDefaultParent = "debug";
+    settings.Add("debugStart", false, "See values referring to autostart");
+    settings.Add("debugSplit", false, "See values referring to autosplit");
+    */
+
+    refreshRate = 30;
+    vars.campaignsLastMaps = new List<string>() {"c7m3_port", "c5m5_bridge", "c6m3_port", "c13m4_cutthroatcreek"};
 }
 
 init
 {
-	print("Game process found");
-	
-	print("Game main module size is " + modules.First().ModuleMemorySize.ToString());
-	
-	vars.Version2221= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x695EF8, 7);
-	vars.Version2207= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x69AF50, 7);
-	vars.Version2203= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x69AF50, 7);
-	vars.Version2155= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x694D28, 7);
-	vars.Version2147= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x694D28, 7);
-	vars.Version2091= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x404EF8, 7);
-	vars.Version2075= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x404EF8, 7);
-	vars.Version2063= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x404EF8, 7);
-	vars.Version2045= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x408738, 7);
-	vars.Version2027= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x405558, 7);
-	vars.Version2012= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x4034F8, 7);
-	vars.Version2008= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x3FF4F0, 7);
-	vars.Version2000= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x3FF4A8, 7);
-		
-	print("Looking for game version...");
-	if(settings["alternateVersionCheck"])
-	{
-		if(settings["version2221"])
-			version="2.2.2.1";
-		else if(settings["version2207"])
-			version="2.2.0.7";
-		else if(settings["version2203"])
-			version="2.2.0.3";
-		else if(settings["version2155"])
-			version="2.1.5.5";
-		else if(settings["version2147"])
-			version="2.1.4.7";
-		else if(settings["version2091"])
-			version="2.0.9.1";
-		else if(settings["version2075"])
-			version="2.0.7.5";
-		else if(settings["version2063"])
-			version="2.0.6.3";
-		else if(settings["version2045"])
-			version="2.0.4.5";
-		else if(settings["version2027"])
-			version="2.0.2.7";
-		else if(settings["version2012"])
-			version="2.0.1.2";
-		else if(settings["version2008"])
-			version="2.0.0.8";
-		else if(settings["version2000"])
-			version="2.0.0.0";
-	}
-	
-	else
-	{
-		if(vars.CurrentVersion=="")
-		{
-			if(vars.Version2221=="2.2.2.1")
-				version="2.2.2.1";
-			else if(vars.Version2207=="2.2.0.7")
-				version="2.2.0.7";
-			else if(vars.Version2203=="2.2.0.3")
-				version="2.2.0.3";
-			else if(vars.Version2155=="2.1.5.5")
-				version="2.1.5.5";
-			else if(vars.Version2147=="2.1.4.7")
-				version="2.1.4.7";
-			else if(vars.Version2091=="2.0.9.1")
-				version="2.0.9.1";
-			else if(vars.Version2075=="2.0.7.5")
-				version="2.0.7.5";
-			else if(vars.Version2075=="2.0.6.3")
-				version="2.0.6.3";
-			else if(vars.Version2045=="2.0.4.5")
-				version="2.0.4.5";
-			else if(vars.Version2027=="2.0.2.7")
-				version="2.0.2.7";
-			else if(vars.Version2012=="2.0.1.2")
-				version="2.0.1.2";
-			else if(vars.Version2008=="2.0.0.8")
-				version="2.0.0.8";
-			else if(vars.Version2000=="2.0.0.0")
-				version="2.0.0.0";
-			else
-				version="";
-		}
-		else
-			version=vars.CurrentVersion;
-	}
-	if(version=="")
-		print("Unknown game version");
-	else
-		print("Game version is " + version);
-	vars.CurrentVersion=version;
-	
-	vars.campaignsCompleted=0;
-	if(settings["allCampaigns"])
-		vars.totalCampaignNumber=14;
-	else if (settings["allCampaignsLegacy"])
-		vars.totalCampaignNumber=13;
-	else if (settings["mainCampaigns"])
-		vars.totalCampaignNumber=5;
-	else if (settings["ILs"])
-		vars.totalCampaignNumber=1;
-	else
-		vars.totalCampaignNumber=-1;
-	
-	if(settings["splitOnce"] && !settings["campaignSplit"])
-		print("Total campaign number is " + vars.totalCampaignNumber.ToString());
-	
-	vars.startRun=false;
-	vars.cutsceneStart = DateTime.MaxValue;
-	vars.lastSplit=null;
+#region SIGSCANNING FUNCTIONS
+    print("Game process found");
+    
+    print("Game main module size is " + modules.First().ModuleMemorySize.ToString());
+
+    Func<string, ProcessModuleWow64Safe> GetModule = (moduleName) =>
+    {
+        return modules.FirstOrDefault(x => x.ModuleName.ToLower() == moduleName);
+    };
+
+    Func<uint, string> GetByteStringU = (o) =>
+    {
+        return BitConverter.ToString(BitConverter.GetBytes(o)).Replace("-", " ");
+    };
+
+    Func<string, string> GetByteStringS = (o) =>
+    {
+        string output = "";
+        foreach (char i in o)
+            output += ((byte)i).ToString("x2") + " ";
+
+        return output;
+    };
+
+    Func<string, SignatureScanner> GetSignatureScanner = (moduleName) =>
+    {
+        ProcessModuleWow64Safe proc = GetModule(moduleName);
+        Thread.Sleep(1000);
+        if (proc == null)
+            throw new Exception(moduleName + " isn't loaded!");
+        print("Module " + moduleName + " found at 0x" + proc.BaseAddress.ToString("X"));
+        return new SignatureScanner(game, proc.BaseAddress, proc.ModuleMemorySize);
+    };
+
+    Func<SignatureScanner, uint, bool> IsWithinModule = (scanner, ptr) =>
+    {
+        uint nPtr = (uint)ptr;
+        uint nStart = (uint)scanner.Address;
+        return ((nPtr > nStart) && (nPtr < nStart + scanner.Size));
+    };
+
+    Func<SignatureScanner, uint, bool> IsLocWithinModule = (scanner, ptr) =>
+    {
+        uint nPtr = (uint)ptr;
+        return ((nPtr % 4 == 0) && IsWithinModule(scanner, ptr));
+    };
+
+    Action<IntPtr, string> ReportPointer = (ptr, name) => 
+    {
+        if (ptr == IntPtr.Zero)
+            print(name + " ptr was NOT found!!");
+        else
+            print(name + " ptr was found at 0x" + ptr.ToString("X"));
+    };
+
+    // throw an exception if given pointer is null
+    Action<IntPtr, string> ShortOut = (ptr, name) =>
+    {
+        if (ptr == IntPtr.Zero)
+        {
+            Thread.Sleep(1000);
+            throw new Exception(name + " ptr was NOT found!!");
+        }
+    };
+
+    Func<IntPtr, int, int, IntPtr> ReadRelativeReference = (ptr, trgOperandOffset, totalSize) =>
+    {
+        int offset = memory.ReadValue<int>(ptr + trgOperandOffset, 4);
+        if (offset == 0)
+            return IntPtr.Zero; 
+        IntPtr actualPtr = IntPtr.Add((ptr + totalSize), offset);
+        return actualPtr;
+    };
+#endregion
+
+#region SIGSCANNING
+    Stopwatch sw = new Stopwatch();
+    sw.Start();
+
+    var clientScanner = GetSignatureScanner("client.dll");
+    var engineScanner = GetSignatureScanner("engine.dll");
+
+    //------ WHATSLOADING SCANNING ------
+    // get reference to "vidmemstats.txt" string
+    IntPtr tmp = engineScanner.Scan(new SigScanTarget(GetByteStringS("vidmemstats.txt")));
+    IntPtr whatsLoadingPtr = IntPtr.Zero;
+    tmp = engineScanner.Scan(new SigScanTarget(1, "68" + GetByteStringU((uint)tmp)));
+    ShortOut(tmp, "vid mem stats ptr");
+    // find the next immediate PUSH instruction
+    for (int i = 0; i < 0x100; i++)
+    {
+        if (game.ReadValue<byte>(tmp + i) == 0x68 && IsLocWithinModule(engineScanner, game.ReadValue<uint>(tmp + i + 1)))
+        {
+            whatsLoadingPtr = game.ReadPointer(tmp + i + 1);
+            break;
+        }
+    }
+
+    //------ GAMELOADING SCANNING ------
+    // add more as need be
+    IntPtr gameLoadingPtr = engineScanner.Scan(new SigScanTarget(2, "38 1D ?? ?? ?? ?? 0F 85 ?? ?? ?? ?? 56 53"));
+    gameLoadingPtr = game.ReadPointer(gameLoadingPtr);
+
+    //------ CUTSCENEPLAYING SCANNING ------
+    // may want to sigscan this offset...
+    const int cutsceneOff1 = 0x44;
+    IntPtr cutscenePlayingPtr = IntPtr.Zero;
+    // search for "C_GameInstructor" string reference
+    tmp = clientScanner.Scan(new SigScanTarget(GetByteStringS("C_GameInstructor") + "00"));
+    tmp = clientScanner.Scan(new SigScanTarget(1, "68" + GetByteStringU((uint)tmp)));
+    ShortOut(tmp, "C_GameInstructor string ref");
+    // backtrack until we found the base pointer
+    for (int i = 0; i < 0x100; i++)
+    {
+        if (game.ReadValue<byte>(tmp - i) == 0xBE && game.ReadValue<byte>(tmp - i + 5) == 0x83 &&  game.ReadValue<byte>(tmp - i + 7) == 0xFF)
+        {
+            cutscenePlayingPtr = game.ReadPointer(tmp - i + 1);
+            if (IsLocWithinModule(clientScanner, (uint)cutscenePlayingPtr))
+                break;
+            cutscenePlayingPtr = IntPtr.Zero;
+        }
+    }
+    ShortOut(cutscenePlayingPtr, "cutscenePlayingPtr");
+    cutscenePlayingPtr = cutscenePlayingPtr - 0x10 + cutsceneOff1;
+
+    var tmpScanner = new SignatureScanner(game, clientScanner.Address, 10);
+
+    //------ SCOREBOARDLOADING SCANNING ------
+    // find "$localcontrastenable" string reference
+    IntPtr scoreboardLoadPtr = IntPtr.Zero;
+    tmp = clientScanner.Scan(new SigScanTarget(GetByteStringS("$localcontrastenable")));
+    tmp = clientScanner.Scan(new SigScanTarget("68" + GetByteStringU((uint)tmp)));
+    ShortOut(tmp, "$localcontrastenable string reference");
+    // scan backwards to target mov instruction
+    for (int i = -1; i > -0x1000; i--)
+    {
+        byte[] bytes = game.ReadBytes(tmp + i, 10);
+        if (bytes[0] == 0x80 && bytes[6] == 0x00 && bytes[7] == 0x0F && bytes[8] == 0x85)
+        {
+            var candidatePtr = game.ReadValue<uint>(tmp + i + 2);
+            
+            if (!IsWithinModule(clientScanner, candidatePtr))
+                continue;
+
+            scoreboardLoadPtr = (IntPtr)candidatePtr;
+        }
+    }
+    if (scoreboardLoadPtr == IntPtr.Zero)
+    {
+        // maybe sigscan this...
+        const int scoreboardLoad2Off = 0x125;
+        // get "cl_reloadpostprocessparams" string reference
+        tmp = clientScanner.Scan(new SigScanTarget(GetByteStringS("cl_reloadpostprocessparams")));
+        tmp = game.ReadPointer(clientScanner.Scan(new SigScanTarget(1, "68 ?? ?? ?? ?? 68 " + GetByteStringU((uint)tmp))));
+        tmpScanner = new SignatureScanner(game, tmp, 0x400);
+        scoreboardLoadPtr = game.ReadPointer(tmpScanner.Scan(new SigScanTarget(2, "81 ?? ?? ?? ?? ?? e8"))) + scoreboardLoad2Off;
+    }
+
+    //------ HASCONTROL SCANNING ------
+    // maybe sigscan this...
+    const int hasControlOff = 0x2C;
+    IntPtr hasControlPtr = IntPtr.Zero;
+    IntPtr hasControlFunc = IntPtr.Zero;
+    // get "weapon_muzzle_smoke" string address
+    IntPtr muzzleSmokeStrPtr = clientScanner.Scan(new SigScanTarget(GetByteStringS("weapon_muzzle_smoke")));
+    ShortOut(muzzleSmokeStrPtr, "muzzleSmokeStrPtr");
+    // get "clientterrorgun.cpp" string reference
+    IntPtr terrorGunStrPtr = clientScanner.Scan(new SigScanTarget(GetByteStringS("\\clientterrorgun.cpp\0")));
+    ShortOut(terrorGunStrPtr, "terrorGunStrPtr");
+    // try and find a result from sigscanning every byte until we get a result. expensive but this is the most reliable way to pull out a string reference
+    while ((tmp = clientScanner.Scan(new SigScanTarget("68" + GetByteStringU((uint)terrorGunStrPtr)))) == IntPtr.Zero)
+        terrorGunStrPtr = terrorGunStrPtr - 1;
+    // init a tmp scanner for later
+    tmpScanner = new SignatureScanner(game, clientScanner.Address, clientScanner.Size);
+hasControlScanAgain:
+    ShortOut(tmp, "terrorGunStrPtr ref");
+    for (int i = 0; ; i++)
+    {
+        // assume there are at least 3 0xCC bytes at the tail of the function, if we've hit that, break the loop
+        if (game.ReadBytes(tmp + i, 3).All(x => x == 0xCC))
+            break;
+
+        // there are 2 candidate functions that references terror gun string, if we hit a "weapon_muzzle_smoke" reference before we meet our desired function call
+        // then mark this as false positive and try scanning for a reference again
+        if (game.ReadValue<byte>(tmp + i) == 0x68 && Math.Abs(game.ReadValue<uint>(tmp + i + 1) - (uint)muzzleSmokeStrPtr) < 2)
+        {
+            tmpScanner = new SignatureScanner(game, tmp + 0x20, (int)(tmpScanner.Address + tmpScanner.Size) - (int)(tmp + 0x20));
+            tmp = tmpScanner.Scan(new SigScanTarget("68" + GetByteStringU((uint)terrorGunStrPtr)));
+            goto hasControlScanAgain;
+        }
+
+        // find our desired function call
+        byte[] bytes = game.ReadBytes(tmp + i, 3);
+        if (bytes.SequenceEqual(new byte[] {0x6A, 0xFF, 0xE8}))
+        {
+            hasControlFunc = ReadRelativeReference(tmp + i + 2, 1, 5);
+            break;
+        }
+    }
+    if (hasControlFunc != IntPtr.Zero)
+    {
+        tmpScanner = new SignatureScanner(game, hasControlFunc, 0x500);
+        hasControlPtr = game.ReadPointer(tmpScanner.Scan(new SigScanTarget(3, "8D 04"))) + hasControlOff;
+    }
+
+    //------ FINALETRIGGER SCANNING ------
+    IntPtr finaleTriggerPtr = IntPtr.Zero;
+    // find "l4d_WeaponStatData" string reference
+    IntPtr statDataStrRef = clientScanner.Scan(new SigScanTarget(GetByteStringS("l4d_WeaponStatData")));
+    statDataStrRef = clientScanner.Scan(new SigScanTarget("68 " + GetByteStringU((uint)statDataStrRef)));
+    ShortOut(statDataStrRef, "statDataStrRef");
+    // find "l4d_stats_nogameplaycheck" string address
+    IntPtr gameplayCheckStrPtr = clientScanner.Scan(new SigScanTarget(GetByteStringS("l4d_stats_nogameplaycheck")));
+    tmpScanner = new SignatureScanner(game, clientScanner.Address, clientScanner.Size);
+finaleTriggerScanAgain:
+    tmp = tmpScanner.Scan(new SigScanTarget("68 " + GetByteStringU((uint)gameplayCheckStrPtr) + "B9"));
+    ShortOut(tmp, "finale trigger 1 scan region");
+    for (int i = 0; i < 0x400; i++)
+    {
+        // assume there are at least 3 0xCC bytes at the tail of the function, if we've hit that, break the loop
+        if (game.ReadBytes(tmp + i, 3).All(x => x == 0xCC))
+            break;
+
+        // trace until seeing a possible instruction pattern
+        byte[] bytes = game.ReadBytes(tmp + i, 6);
+        if (bytes[0] == 0xB9 && bytes[5] == 0xE8)
+            // check if call goes to the function which contains the statDataStrRef
+            if ((uint)statDataStrRef - (uint)ReadRelativeReference(tmp + i + 5, 1, 5) < 0x200)
+            {
+                finaleTriggerPtr = game.ReadPointer(tmp + i + 1) + 0x128;
+                goto end;
+            }
+    }
+    // if we haven't found anything, then the string reference might be wrong
+    tmpScanner = new SignatureScanner(game, tmp + 1, (int)(tmpScanner.Address + tmpScanner.Size) - (int)(tmp + 0x20));
+    goto finaleTriggerScanAgain;
+end:;
+
+    ReportPointer(whatsLoadingPtr, "whats loading");
+    ReportPointer(gameLoadingPtr, "game loading");
+    ReportPointer(cutscenePlayingPtr, "cutscene playing");
+    ReportPointer(scoreboardLoadPtr, "scoreboard loading");
+    ReportPointer(hasControlPtr, "has control func");
+    ReportPointer(finaleTriggerPtr, "finale trigger");
+    
+    sw.Stop();
+    print("Sigscanning done in " + sw.ElapsedMilliseconds / 1000f + " seconds");
+
+#endregion
+
+#region WATCHERS
+    vars.whatsLoading = new StringWatcher(whatsLoadingPtr, 256);
+    vars.gameLoading = new MemoryWatcher<bool>(gameLoadingPtr);
+    vars.cutscenePlaying = new MemoryWatcher<bool>(cutscenePlayingPtr);
+    vars.scoreboardLoad = new MemoryWatcher<bool>(scoreboardLoadPtr);
+    vars.hasControl = new MemoryWatcher<bool>(hasControlPtr);
+    vars.finaleTrigger = new MemoryWatcher<bool>(finaleTriggerPtr);
+
+    vars.mwList = new MemoryWatcherList()
+    {
+        vars.whatsLoading,
+        vars.gameLoading,
+        vars.cutscenePlaying,
+        vars.scoreboardLoad,
+        vars.hasControl,
+        vars.finaleTrigger,
+    };
+#endregion
+    
+    vars.campaignsCompleted = 0;
+    if (settings["allCampaigns"])
+        vars.totalCampaignNumber = 14;
+    else if (settings["allCampaignsLegacy"])
+        vars.totalCampaignNumber = 13;
+    else if (settings["mainCampaigns"])
+        vars.totalCampaignNumber = 5;
+    else if (settings["ILs"])
+        vars.totalCampaignNumber = 1;
+    else
+        vars.totalCampaignNumber = -1;
+    
+    if (settings["splitOnce"] && !settings["campaignSplit"])
+        print("Total campaign number is " + vars.totalCampaignNumber.ToString());
+    
+    vars.startRun = false;
+    vars.cutsceneStart = DateTime.MaxValue;
+    vars.lastSplit = null;
 }
 
 start
 {
-	if (settings["AutomaticGameTime"])
-	{
-		timer.CurrentTimingMethod = TimingMethod.GameTime;
-	}
-	if (settings["foxyStart2"])
-	{
-		// Once we have control after a cutscene plays for at least 1 second, we're ready to start.
-		if (current.hasControl && !current.gameLoading)
-		{
-			if (settings["cutscenelessStart"] || (DateTime.Now - vars.cutsceneStart > TimeSpan.FromSeconds(1)))
-			{
-				print("CUSTSCENE RAN FOR " + (DateTime.Now - vars.cutsceneStart));
-				vars.cutsceneStart = DateTime.MaxValue;
-				vars.lastSplit=null;
-				return true;
-			}
-			else if (!settings["cutscenelessStart"] && vars.cutsceneStart != DateTime.MaxValue)
-			{
-				// Sometimes the game sets 'current.hasControl' to 'false', even when you have control. We need to detect those cases in order to reset the cutscene timer.
-				print("FALSE POSITIVE!");
-				vars.cutsceneStart = DateTime.MaxValue;
-			}
-		}
-		
-		// If we're not loading, and the player does not have control, a cutscene must be playing. Mark the time.
-		if (!old.hasControl && !current.hasControl && !current.gameLoading && vars.cutsceneStart == DateTime.MaxValue)
-		{
-			print("CUSTSCENE START!");
-			vars.cutsceneStart = DateTime.Now;
-		}
-		
-		return false;
-	}
-	else
-	{
-		if(settings["cutscenelessStart"] && old.gameLoading && !vars.startRun)
-		{
-			vars.startRun=true;
-			print("Autostart triggered");
-		}
-		
-		if(settings["cutscenelessStart"] && !current.gameLoading && current.hasControl && vars.startRun)
-		{
-			vars.startRun=false;
-			print("Run autostarted");
-			vars.lastSplit=null;
-			return true;
-		}
-		
-		if(old.gameLoading && (current.cutscenePlaying1 || current.cutscenePlaying2) && !vars.startRun)
-		{
-			vars.startRun=true;
-			print("Autostart triggered");
-		}
-		
-		else if(!current.gameLoading && (old.cutscenePlaying1 || old.cutscenePlaying2) && !current.cutscenePlaying1 && !current.cutscenePlaying2 && vars.startRun)
-		{
-			vars.startRun=false;
-			print("Run autostarted");
-			vars.lastSplit=null;
-			return true;
-		}
-	}
+    if (settings["AutomaticGameTime"])
+        timer.CurrentTimingMethod = TimingMethod.GameTime;
+
+    if (settings["foxyStart2"])
+    {
+        // Once we have control after a cutscene plays for at least 1 second, we're ready to start.
+        if (vars.hasControl.Current && !vars.gameLoading.Current)
+        {
+            if (settings["cutscenelessStart"] || (DateTime.Now - vars.cutsceneStart > TimeSpan.FromSeconds(1)))
+            {
+                print("CUSTSCENE RAN FOR " + (DateTime.Now - vars.cutsceneStart));
+                vars.cutsceneStart = DateTime.MaxValue;
+                vars.lastSplit=null;
+                return true;
+            }
+            else if (!settings["cutscenelessStart"] && vars.cutsceneStart != DateTime.MaxValue)
+            {
+                // Sometimes the game sets 'vars.hasControl.Current' to 'false', even when you have control. We need to detect those cases in order to reset the cutscene timer.
+                print("FALSE POSITIVE!");
+                vars.cutsceneStart = DateTime.MaxValue;
+            }
+        }
+        
+        // If we're not loading, and the player does not have control, a cutscene must be playing. Mark the time.
+        if (!vars.hasControl.Old && !vars.hasControl.Current && !vars.gameLoading.Current && vars.cutsceneStart == DateTime.MaxValue)
+        {
+            print("CUSTSCENE START!");
+            vars.cutsceneStart = DateTime.Now;
+        }
+        
+        return false;
+    }
+    else
+    {
+        if (settings["cutscenelessStart"] && vars.gameLoading.Old && !vars.startRun)
+        {
+            vars.startRun=true;
+            print("Autostart triggered");
+        }
+        
+        if (settings["cutscenelessStart"] && !vars.gameLoading.Current && vars.hasControl.Current && vars.startRun)
+        {
+            vars.startRun=false;
+            print("Run autostarted");
+            vars.lastSplit=null;
+            return true;
+        }
+        
+        if (vars.gameLoading.Old && vars.cutscenePlaying.Current && !vars.startRun)
+        {
+            vars.startRun=true;
+            print("Autostart triggered");
+        }
+        
+        else if (!vars.gameLoading.Current && vars.cutscenePlaying.Old && !vars.cutscenePlaying.Current && vars.startRun)
+        {
+            vars.startRun=false;
+            print("Run autostarted");
+            vars.lastSplit=null;
+            return true;
+        }
+    }
 }
 
 split
 {
-	//Split on finales
-	if(settings["campaignSplit"])
-	{
-		if((current.finaleTrigger1 || current.finaleTrigger2) && !old.finaleTrigger1 && !old.finaleTrigger2)
-		{
-			if(current.whatsLoading == vars.lastSplit)
-			{
-				print("Ceased double split attempt");
-				return false;
-			}
-			print("Split on finale");
-			vars.lastSplit = current.whatsLoading;
-			return true;
-		}
-		else if((current.cutscenePlaying1 || current.cutscenePlaying2) && !old.cutscenePlaying1 && !old.cutscenePlaying2 && (current.whatsLoading == "c7m3_port" || current.whatsLoading == "c5m5_bridge" || current.whatsLoading == "c6m3_port" || current.whatsLoading == "c13m4_cutthroatcreek"))
-		{
-			if(current.whatsLoading == vars.lastSplit)
-			{
-				print("Ceased double split attempt");
-				return false;
-			}
-			print("Split on THE BEST CAMPAIGN EVER");
-			vars.lastSplit = current.whatsLoading;
-			return true;
-		}
-		//Split inbetween chapters
-		if(settings["chapterSplit"])
-		{
-			if(settings["scoreboardVSgameLoading"])
-			{
-				if(!current.finaleTrigger1 && !current.finaleTrigger2 && !old.scoreboardLoad1 && !old.scoreboardLoad2 && (current.scoreboardLoad1 || current.scoreboardLoad2))
-				{
-					print("Split at the end of a chapter at the scoreboard");
-					vars.lastSplit = current.whatsLoading; // should help prevent finale split failure if user's timer doesn't start automatically
-					return true;
-				}
-			}
-			else
-			{
-				if(!current.finaleTrigger1 && !current.finaleTrigger2 && !old.gameLoading && current.gameLoading && (current.scoreboardLoad1 || current.scoreboardLoad2))
-				{
-					print("Split at the end of a chapter when it began to load");
-					vars.lastSplit = current.whatsLoading; // should help prevent finale split failure if user's timer doesn't start automatically
-					return true;
-				}
-			}
-		}
-	}
-	
-	
-	//Split only when the run ends
-	if(settings["splitOnce"])
-	{
-		if((current.finaleTrigger1 || current.finaleTrigger2) && !old.finaleTrigger1 && !old.finaleTrigger2)
-		{
-			if(current.whatsLoading == vars.lastSplit)
-			{
-				print("Ceased double split attempt");
-				return false;
-			}
-			vars.lastSplit = current.whatsLoading;
-			vars.campaignsCompleted++;
-			print("Campaign count is now " + vars.campaignsCompleted.ToString());
-		}
-		else if((current.cutscenePlaying1 || current.cutscenePlaying2) && !old.cutscenePlaying1 && !old.cutscenePlaying2 && (current.whatsLoading == "c7m3_port" || current.whatsLoading == "c5m5_bridge" || current.whatsLoading == "c6m3_port"  || current.whatsLoading == "c13m4_cutthroatcreek"))
-		{
-			if(current.whatsLoading == vars.lastSplit)
-			{
-				print("Ceased double split attempt");
-				return false;
-			}
-			vars.lastSplit = current.whatsLoading;
-			vars.campaignsCompleted++;
-			print("Finished THE BEST CAMPAIGN EVER and the campaign sum is now " + vars.campaignsCompleted.ToString());
-		}
-		if(vars.campaignsCompleted==vars.totalCampaignNumber)
-		{
-			print("Ended the run.");
-			return true;
-		}
-	}
+    //Split on finales
+    if (settings["campaignSplit"])
+    {
+        if (vars.finaleTrigger.Current && !vars.finaleTrigger.Old)
+        {
+            if (vars.whatsLoading.Current == vars.lastSplit)
+            {
+                print("Ceased double split attempt");
+                return false;
+            }
+            print("Split on finale");
+            vars.lastSplit = vars.whatsLoading.Current;
+            return true;
+        }
+        else if (vars.cutscenePlaying.Current && !vars.cutscenePlaying.Old && vars.campaignsLastMaps.Contains(vars.whatsLoading.Current))
+        {
+            if (vars.whatsLoading.Current == vars.lastSplit)
+            {
+                print("Ceased double split attempt");
+                return false;
+            }
+            print("Split on THE BEST CAMPAIGN EVER");
+            vars.lastSplit = vars.whatsLoading.Current;
+            return true;
+        }
+        //Split inbetween chapters
+        if (settings["chapterSplit"])
+        {
+            if (settings["scoreboardVSgameLoading"])
+            {
+                if (!vars.finaleTrigger.Current && !vars.scoreboardLoad.Old && vars.scoreboardLoad.Current)
+                {
+                    print("Split at the end of a chapter at the scoreboard");
+                    vars.lastSplit = vars.whatsLoading.Current; // should help prevent finale split failure if user's timer doesn't start automatically
+                    return true;
+                }
+            }
+            else
+            {
+                if (!vars.finaleTrigger.Current && !vars.gameLoading.Old && vars.gameLoading.Current && vars.scoreboardLoad.Current)
+                {
+                    print("Split at the end of a chapter when it began to load");
+                    vars.lastSplit = vars.whatsLoading.Current; // should help prevent finale split failure if user's timer doesn't start automatically
+                    return true;
+                }
+            }
+        }
+    }
+    
+    
+    //Split only when the run ends
+    if (settings["splitOnce"])
+    {
+        if (vars.finaleTrigger.Current && !vars.finaleTrigger.Old)
+        {
+            if (vars.whatsLoading.Current == vars.lastSplit)
+            {
+                print("Ceased double split attempt");
+                return false;
+            }
+            vars.lastSplit = vars.whatsLoading.Current;
+            vars.campaignsCompleted++;
+            print("Campaign count is now " + vars.campaignsCompleted.ToString());
+        }
+        else if (vars.cutscenePlaying.Current && !vars.cutscenePlaying.Old && !vars.campaignsLastMaps.Contains(vars.whatsLoading))
+        {
+            if (vars.whatsLoading.Current == vars.lastSplit)
+            {
+                print("Ceased double split attempt");
+                return false;
+            }
+            vars.lastSplit = vars.whatsLoading.Current;
+            vars.campaignsCompleted++;
+            print("Finished THE BEST CAMPAIGN EVER and the campaign sum is now " + vars.campaignsCompleted.ToString());
+        }
+        if (vars.campaignsCompleted == vars.totalCampaignNumber)
+        {
+            print("Ended the run.");
+            return true;
+        }
+    }
 }
 
 isLoading
 {
-	return current.gameLoading;
+    return vars.gameLoading.Current;
 }
 
 update
 {
-	if(settings["debug"])
-	{
-		if(settings["debugStart"]) 
-		{
-			print("Autostart:\n current.gameLoading = " + current.gameLoading.ToString() +
-			"\n current.cutscenePlaying1 = " + current.cutscenePlaying1.ToString() +
-			"\n current.cutscenePlaying2 = " + current.cutscenePlaying2.ToString() +
-			"\n current.hasControl = " + current.hasControl.ToString() +
-			"\n vars.startRun = " + vars.startRun.ToString());
-		}
-		if(settings["debugSplit"])
-		{
-			print("Autosplit:\n current.finaleTrigger1 = " + current.finaleTrigger1.ToString() +
-			"\n current.finaleTrigger2 = " + current.finaleTrigger2.ToString() +
-			"\n current.cutscenePlaying1 = " + current.cutscenePlaying1.ToString() +
-			"\n current.cutscenePlaying2 = " + current.cutscenePlaying2.ToString() +
-			"\n current.whatsLoading = " + current.whatsLoading);
-			if(settings["chapterSplit"])
-			{
-				print(" current.scoreboardLoad1 = " + current.scoreboardLoad1.ToString() +
-				"\n current.scoreboardLoad2 = " + current.scoreboardLoad2.ToString() +
-				"\n current.gameLoading = " + current.gameLoading.ToString());
-			}
-			if(settings["splitOnce"])
-			{
-				print(" vars.campaignsCompleted = " + vars.campaignsCompleted.ToString() +
-				"\n vars.totalCampaignNumber = " + vars.totalCampaignNumber.ToString());
-			}
-		}
-	}
-	
-	if(version == "")
-		return false;
+    vars.mwList.UpdateAll(game);
+
+    /*
+    if (settings["debug"])
+    {
+        if (settings["debugStart"]) 
+        {
+            print("Autostart:\n vars.gameLoading.Current = " + vars.gameLoading.Current.ToString() +
+            "\n vars.cutscenePlaying.Current = " + vars.cutscenePlaying.Current.ToString() +
+            "\n current.cutscenePlaying2 = " + current.cutscenePlaying2.ToString() +
+            "\n vars.hasControl.Current = " + vars.hasControl.Current.ToString() +
+            "\n vars.startRun = " + vars.startRun.ToString());
+        }
+        if (settings["debugSplit"])
+        {
+            print("Autosplit:\n vars.finaleTrigger.Current = " + vars.finaleTrigger.Current.ToString() +
+            "\n current.finaleTrigger2 = " + current.finaleTrigger2.ToString() +
+            "\n vars.cutscenePlaying.Current = " + vars.cutscenePlaying.Current.ToString() +
+            "\n current.cutscenePlaying2 = " + current.cutscenePlaying2.ToString() +
+            "\n vars.whatsLoading.Current = " + vars.whatsLoading.Current);
+            if (settings["chapterSplit"])
+            {
+                print(" vars.scoreboardLoad.Current = " + vars.scoreboardLoad.Current.ToString() +
+                "\n current.scoreboardLoad2 = " + current.scoreboardLoad2.ToString() +
+                "\n vars.gameLoading.Current = " + vars.gameLoading.Current.ToString());
+            }
+            if (settings["splitOnce"])
+            {
+                print(" vars.campaignsCompleted = " + vars.campaignsCompleted.ToString() +
+                "\n vars.totalCampaignNumber = " + vars.totalCampaignNumber.ToString());
+            }
+        }
+    }
+    */
 }
 
 exit
 {
-	print("Game closed.");
+    print("Game closed.");
 }
