@@ -7,6 +7,8 @@ startup
 {
     settings.Add("AutomaticGameTime", true, "Automatically set splits to Game Time");
     settings.Add("campaignSplit", true, "Split after each campaign");
+    settings.Add("burhac", false, "Split at the end of intro cutscenes", "campaignSplit");
+    settings.SetToolTip("burhac", "WORKS ONLY FOR VALVE CAMPAIGNS - Split upon taking control after a cutscene (useful for determining IL time during a fullgame run)");
     settings.Add("chapterSplit", true, "Split inbetween chapters", "campaignSplit");
     settings.Add("scoreboardVSgameLoading", true, "Split chapters on Scoreboard vs Game Loading", "chapterSplit");
     settings.SetToolTip("scoreboardVSgameLoading", "Toggle between splitting chapters when the scoreboard shows up (checked) and when the loading between chapters begins (unchecked).");
@@ -33,6 +35,22 @@ startup
 
     refreshRate = 30;
     vars.campaignsLastMaps = new List<string>() {"c7m3_port", "c5m5_bridge", "c6m3_port", "c13m4_cutthroatcreek"};
+    vars.campaignsFirstMaps = new List<string>() {
+        "c1m1_hotel", 
+        "c2m1_highway",
+        "c3m1_plankcountry",
+        "c4m1_milltown_a",
+        "c5m1_waterfront",
+        "c6m1_riverbank",
+        "c7m1_docks",
+        "c8m1_apartment",
+        "c9m1_alleys",
+        "c10m1_caves",
+        "c11m1_greenhouse",
+        "c12m1_hilltop",
+        "c13m1_alpinecreek",
+        "c14m1_junkyard"
+    };
 }
 
 init
@@ -342,7 +360,7 @@ start
         {
             vars.startRun=false;
             print("(cutsceneless) Run autostarted");
-            vars.lastSplit=null;
+            vars.lastSplit = vars.whatsLoading.Current;
             return true;
         }
         return false;
@@ -356,7 +374,7 @@ start
             {
                 print("CUSTSCENE RAN FOR " + (DateTime.Now - vars.cutsceneStart));
                 vars.cutsceneStart = DateTime.MaxValue;
-                vars.lastSplit=null;
+                vars.lastSplit = vars.whatsLoading.Current;
                 return true;
             }
             else if (vars.cutsceneStart != DateTime.MaxValue)
@@ -377,7 +395,8 @@ start
         return false;
     }
         
-    /*if (vars.gameLoading.Old && vars.cutscenePlaying.Current && !vars.startRun)
+    /* Old start logic, relies on cutscenePlaying which needs gameinstructor turned on, so we don't use it anymore
+    if (vars.gameLoading.Old && vars.cutscenePlaying.Current && !vars.startRun)
     {
         vars.startRun=true;
         print("Autostart triggered");
@@ -387,7 +406,7 @@ start
     {
         vars.startRun=false;
         print("Run autostarted");
-        vars.lastSplit=null;
+        vars.lastSplit = vars.whatsLoading.Current;
         return true;
     }*/
 }
@@ -419,6 +438,30 @@ split
             vars.lastSplit = vars.whatsLoading.Current;
             return true;
         }
+        if (settings["burhac"]) // VERY JANKY, probably not efficient and is hardcoded to the 14 official maps, but it's the only way we can do it when gameinstructor is turned off
+        {
+            // We are not loading, haven't split already and are on a campaign's first map
+            if (!vars.gameLoading.Current && !vars.whatsLoading.Current.Equals(vars.lastSplit) && vars.campaignsFirstMaps.Contains(vars.whatsLoading.Current)) {
+                // Once we have control after a cutscene plays for at least 1 second, we're ready to split
+                if (vars.hasControl.Current)
+                {
+                    if (DateTime.Now - vars.cutsceneStart > TimeSpan.FromSeconds(1))
+                    {
+                        print("(burhacSplit) CUTSCENE RAN FOR " + (DateTime.Now - vars.cutsceneStart));
+                        vars.cutsceneStart = DateTime.MaxValue;
+                        vars.lastSplit = vars.whatsLoading.Current;
+                        return true;
+                    }
+                }
+                // If we're not loading, and the player does not have control, a cutscene must be playing. Mark the time if it hasn't been marked yet.
+                else if (vars.cutsceneStart == DateTime.MaxValue)
+                {
+                    print("(burhacSplit) CUTSCENE START!");
+                    vars.cutsceneStart = DateTime.Now;
+                }
+            }
+        } 
+        
         //Split inbetween chapters
         if (settings["chapterSplit"])
         {
