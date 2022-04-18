@@ -19,12 +19,9 @@ startup
     settings.Add("allCampaignsLegacy", false, "All Campaigns Legacy","mainCampaigns");
     settings.Add("allCampaigns", false, "All Campaigns (14)","allCampaignsLegacy");
     
-    settings.Add("cutscenelessStart", false, "Autostart on cutsceneless campaigns");
-    settings.SetToolTip("cutscenelessStart", "Uses a different method to detect when to autostart. Causes the splitter to autostart on every level");
+    settings.Add("cutscenelessStart", false, "Autostart on cutsceneless campaigns (SEE TOOLTIP)");
+    settings.SetToolTip("cutscenelessStart", "Uses a different method to detect when to start the timer. Don't use this unless you are running a campaign like Drop Dead Gorges, otherwise you may run into issues.");
     
-    settings.Add("foxyStart2", false, "New start logic");
-    settings.SetToolTip("foxyStart2", "Use the new start logic. This should fix autostart for people which it wasn't working. Uncheck to revert to the old method.");
-        
     /*
     settings.Add("debug", false, "See internal values through DebugView");
     settings.SetToolTip("debug", "See the values that the splitter is using to make actions. Requires DebugView. This setting may cause additional lag, so only have this checked if needed.");
@@ -334,19 +331,35 @@ start
     if (settings["AutomaticGameTime"])
         timer.CurrentTimingMethod = TimingMethod.GameTime;
 
-    if (settings["foxyStart2"])
+    if (settings["cutscenelessStart"])
+    {
+        if(vars.gameLoading.Old && !vars.startRun)
+        {
+            vars.startRun=true;
+            print("(cutsceneless) Autostart triggered");
+        }
+        if (!vars.gameLoading.Current && vars.hasControl.Current && vars.startRun)
+        {
+            vars.startRun=false;
+            print("(cutsceneless) Run autostarted");
+            vars.lastSplit=null;
+            return true;
+        }
+        return false;
+    }
+    else
     {
         // Once we have control after a cutscene plays for at least 1 second, we're ready to start.
         if (vars.hasControl.Current && !vars.gameLoading.Current)
         {
-            if (settings["cutscenelessStart"] || (DateTime.Now - vars.cutsceneStart > TimeSpan.FromSeconds(1)))
+            if (DateTime.Now - vars.cutsceneStart > TimeSpan.FromSeconds(1))
             {
                 print("CUSTSCENE RAN FOR " + (DateTime.Now - vars.cutsceneStart));
                 vars.cutsceneStart = DateTime.MaxValue;
                 vars.lastSplit=null;
                 return true;
             }
-            else if (!settings["cutscenelessStart"] && vars.cutsceneStart != DateTime.MaxValue)
+            else if (vars.cutsceneStart != DateTime.MaxValue)
             {
                 // Sometimes the game sets 'vars.hasControl.Current' to 'false', even when you have control. We need to detect those cases in order to reset the cutscene timer.
                 print("FALSE POSITIVE!");
@@ -363,36 +376,20 @@ start
         
         return false;
     }
-    else
+        
+    /*if (vars.gameLoading.Old && vars.cutscenePlaying.Current && !vars.startRun)
     {
-        if (settings["cutscenelessStart"] && vars.gameLoading.Old && !vars.startRun)
-        {
-            vars.startRun=true;
-            print("Autostart triggered");
-        }
-        
-        if (settings["cutscenelessStart"] && !vars.gameLoading.Current && vars.hasControl.Current && vars.startRun)
-        {
-            vars.startRun=false;
-            print("Run autostarted");
-            vars.lastSplit=null;
-            return true;
-        }
-        
-        if (vars.gameLoading.Old && vars.cutscenePlaying.Current && !vars.startRun)
-        {
-            vars.startRun=true;
-            print("Autostart triggered");
-        }
-        
-        else if (!vars.gameLoading.Current && vars.cutscenePlaying.Old && !vars.cutscenePlaying.Current && vars.startRun)
-        {
-            vars.startRun=false;
-            print("Run autostarted");
-            vars.lastSplit=null;
-            return true;
-        }
+        vars.startRun=true;
+        print("Autostart triggered");
     }
+    
+    else if (!vars.gameLoading.Current && vars.cutscenePlaying.Old && !vars.cutscenePlaying.Current && vars.startRun)
+    {
+        vars.startRun=false;
+        print("Run autostarted");
+        vars.lastSplit=null;
+        return true;
+    }*/
 }
 
 split
