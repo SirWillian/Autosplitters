@@ -241,12 +241,20 @@ hasControlScanAgain:
         tmpScanner = new SignatureScanner(game, hasControlFunc, 0x500);
         hasControlPtr = game.ReadPointer(tmpScanner.Scan(new SigScanTarget(3, "8D 04"))) + hasControlOff;
     } */
+    
+    IntPtr hasControlPtr = IntPtr.Zero;
+    vars.Version1005= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x40CF48, 7);
+    vars.VersionNewest= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x3E3334, 6);
+    if(vars.Version1005=="1.0.0.5")
+        hasControlPtr = modules.Where(m => m.ModuleName == "client.dll").First().BaseAddress + 0x545364;
+    else if(vars.VersionNewest=="1.0.4.")
+        hasControlPtr = modules.Where(m => m.ModuleName == "client.dll").First().BaseAddress + 0x5696C4;
 
     //ReportPointer(whatsLoadingPtr, "whats loading");
     ReportPointer(gameLoadingPtr, "game loading");
     ReportPointer(cutscenePlayingPtr, "cutscene playing");
     ReportPointer(scoreboardLoadPtr, "scoreboard loading");
-    //ReportPointer(hasControlPtr, "has control func");
+    ReportPointer(hasControlPtr, "has control func");
     
     sw.Stop();
     print("Sigscanning done in " + sw.ElapsedMilliseconds / 1000f + " seconds");
@@ -312,7 +320,7 @@ start
         // Once we have control after a cutscene plays for at least 1 second, we're ready to start.
         if (vars.hasControl.Current && !vars.gameLoading.Current)
         {
-            if (DateTime.Now - vars.cutsceneStart > TimeSpan.FromSeconds(1))
+            if (DateTime.Now - vars.cutsceneStart > TimeSpan.FromSeconds(0.25))
             {
                 print("CUSTSCENE RAN FOR " + (DateTime.Now - vars.cutsceneStart));
                 vars.cutsceneStart = DateTime.MaxValue;
