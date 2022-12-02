@@ -194,61 +194,9 @@ init
 		scoreboardLoadPtr = game.ReadPointer(tmpScanner.Scan(new SigScanTarget(2, "81 ?? ?? ?? ?? ?? e8"))) + scoreboardLoad2Off;
 	}
 
-	/* FIXME: Doesn't work on L4D1
 	//------ HASCONTROL SCANNING ------
-	// maybe sigscan this...
-	const int hasControlOff = 0x2C;
-	IntPtr hasControlPtr = IntPtr.Zero;
-	IntPtr hasControlFunc = IntPtr.Zero;
-	// get "weapon_muzzle_smoke" string address
-	IntPtr muzzleSmokeStrPtr = clientScanner.Scan(new SigScanTarget(GetByteStringS("weapon_muzzle_smoke")));
-	ShortOut(muzzleSmokeStrPtr, "muzzleSmokeStrPtr");
-	// get "clientterrorgun.cpp" string reference
-	IntPtr terrorGunStrPtr = clientScanner.Scan(new SigScanTarget(GetByteStringS("\\clientterrorgun.cpp\0")));
-	ShortOut(terrorGunStrPtr, "terrorGunStrPtr");
-	// try and find a result from sigscanning every byte until we get a result. expensive but this is the most reliable way to pull out a string reference
-	while ((tmp = clientScanner.Scan(new SigScanTarget("68" + GetByteStringU((uint)terrorGunStrPtr)))) == IntPtr.Zero)
-		terrorGunStrPtr = terrorGunStrPtr - 1;
-	// init a tmp scanner for later
-	tmpScanner = new SignatureScanner(game, clientScanner.Address, clientScanner.Size);
-hasControlScanAgain:
-	ShortOut(tmp, "terrorGunStrPtr ref");
-	for (int i = 0; ; i++)
-	{
-		// assume there are at least 3 0xCC bytes at the tail of the function, if we've hit that, break the loop
-		if (game.ReadBytes(tmp + i, 3).All(x => x == 0xCC))
-			break;
-
-		// there are 2 candidate functions that references terror gun string, if we hit a "weapon_muzzle_smoke" reference before we meet our desired function call
-		// then mark this as false positive and try scanning for a reference again
-		if (game.ReadValue<byte>(tmp + i) == 0x68 && Math.Abs(game.ReadValue<uint>(tmp + i + 1) - (uint)muzzleSmokeStrPtr) < 2)
-		{
-			tmpScanner = new SignatureScanner(game, tmp + 0x20, (int)(tmpScanner.Address + tmpScanner.Size) - (int)(tmp + 0x20));
-			tmp = tmpScanner.Scan(new SigScanTarget("68" + GetByteStringU((uint)terrorGunStrPtr)));
-			goto hasControlScanAgain;
-		}
-
-		// find our desired function call
-		byte[] bytes = game.ReadBytes(tmp + i, 3);
-		if (bytes.SequenceEqual(new byte[] {0x6A, 0xFF, 0xE8}))
-		{
-			hasControlFunc = ReadRelativeReference(tmp + i + 2, 1, 5);
-			break;
-		}
-	}
-	if (hasControlFunc != IntPtr.Zero)
-	{
-		tmpScanner = new SignatureScanner(game, hasControlFunc, 0x500);
-		hasControlPtr = game.ReadPointer(tmpScanner.Scan(new SigScanTarget(3, "8D 04"))) + hasControlOff;
-	} */
-	
-	IntPtr hasControlPtr = IntPtr.Zero;
-	vars.Version1005= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x40CF48, 7);
-	vars.VersionNewest= memory.ReadString(modules.Where(m => m.ModuleName == "engine.dll").First().BaseAddress + 0x3E3334, 6);
-	if(vars.Version1005=="1.0.0.5")
-		hasControlPtr = modules.Where(m => m.ModuleName == "client.dll").First().BaseAddress + 0x545364;
-	else if(vars.VersionNewest=="1.0.4.")
-		hasControlPtr = modules.Where(m => m.ModuleName == "client.dll").First().BaseAddress + 0x5696C4;
+	IntPtr hasControlPtr = clientScanner.Scan(new SigScanTarget(1, "BE ?? ?? ?? ?? 33 DB D9 EE 89 5E E4 D9"));
+	hasControlPtr = game.ReadPointer(hasControlPtr)+0x10;
 
 	//ReportPointer(whatsLoadingPtr, "whats loading");
 	ReportPointer(gameLoadingPtr, "game loading");
