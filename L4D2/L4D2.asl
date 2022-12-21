@@ -131,16 +131,141 @@ init
 #endregion
 
 #region SIGSCANNING
+    IntPtr whatsLoadingPtr = IntPtr.Zero;
+    IntPtr gameLoadingPtr = IntPtr.Zero;
+    IntPtr cutscenePlayingPtr = IntPtr.Zero;
+    IntPtr scoreboardLoadPtr = IntPtr.Zero;
+    IntPtr hasControlPtr = IntPtr.Zero;
+    IntPtr finaleTriggerPtr = IntPtr.Zero;
     Stopwatch sw = new Stopwatch();
     sw.Start();
+    // check for known versions
+    ProcessModuleWow64Safe engine = GetModule("engine.dll");
+    ProcessModuleWow64Safe client = GetModule("client.dll");
+    if (engine == null || client == null) {
+        Thread.Sleep(250);
+        throw new Exception("engine.dll and/or client.dll isn't loaded yet!"); }
+    /* I like how this autosplitter really has gone full circle lmao
+     * There's a chance I have made a mistake copying/pasting the known versions - and this is also probably violating several laws of Good Programming Practices. */
+    string engineHash;
+    using (var md5 = System.Security.Cryptography.MD5.Create())
+    using (var s = File.Open(engine.FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+    engineHash = md5.ComputeHash(s).Select(x => x.ToString("X2")).Aggregate((a, b) => a + b);
+    string clientHash;
+    using (var md5 = System.Security.Cryptography.MD5.Create())
+    using (var s = File.Open(client.FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+    clientHash = md5.ComputeHash(s).Select(x => x.ToString("X2")).Aggregate((a, b) => a + b);
+    switch (engineHash) {
+        case "6CBADAA9132AD6138F3D50920BB9ECFE":
+            print("using 2000 engine offsets");
+            whatsLoadingPtr = engine.BaseAddress + 0x3C9988;
+            gameLoadingPtr = engine.BaseAddress + 0x5CC89C;
+            break;
+        case "F79518A744FE34538726AAC4A9E43593":
+            print("using 2012 engine offsets");
+            whatsLoadingPtr = engine.BaseAddress + 0x3CD988;
+            gameLoadingPtr = engine.BaseAddress + 0x5D091C;
+            break;
+        case "6BD61059254B425464507486F096D209":
+            print("using 2027 engine offsets");
+            whatsLoadingPtr = engine.BaseAddress + 0x3CF988;
+            gameLoadingPtr = engine.BaseAddress + 0x5D291C;
+            break;
+        case "9B767FB9EC1AA2C35401F1A7310B0943":
+            print("using 2045 engine offsets");
+            whatsLoadingPtr = engine.BaseAddress + 0x3D2A00;
+            gameLoadingPtr = engine.BaseAddress + 0x5DE494;
+            break;
+        case "C7BA3CF5AC8722BCA7CBCA0BFB4BCB5B":
+            print("using 2075 engine offsets");
+            whatsLoadingPtr = engine.BaseAddress + 0x3CF630;
+            gameLoadingPtr = engine.BaseAddress + 0x5DA8CC;
+            break;
+        case "074A3EF53F97661C724C5FD5FE7F33D8":
+            print("using 2091 engine offsets");
+            whatsLoadingPtr = engine.BaseAddress + 0x3CF630;
+            gameLoadingPtr = engine.BaseAddress + 0x5E19D4;
+            break;
+        case "7899154C8A5263F8919A8E272E1C65AD":
+            print("using 2147 engine offsets");
+            whatsLoadingPtr = engine.BaseAddress + 0x42F240;
+            gameLoadingPtr = engine.BaseAddress + 0x46C54C;
+            break;
+        case "D6DCB5F35F8CA379E1649AE5E5BD0B52":
+            print("using 2203 engine offsets");
+            whatsLoadingPtr = engine.BaseAddress + 0x435240;
+            gameLoadingPtr = engine.BaseAddress + 0x47264C;
+            break;
+    }
+    switch (clientHash) {
+        case "B23B95981DE30C91C8C9C3E3FD7F3E84":
+            print("using 2000 client offsets");
+            cutscenePlayingPtr = client.BaseAddress + 0x66CEEC;
+            scoreboardLoadPtr = client.BaseAddress + 0x6DB58D;
+            hasControlPtr = client.BaseAddress + 0x68FBD4;
+            finaleTriggerPtr = client.BaseAddress + 0x6ED414;
+            break;
+        case "474DB57CBCDC9819AA36FBFA55CCFBF5":
+            print("using 2012 client offsets");
+            cutscenePlayingPtr = client.BaseAddress + 0x67647C;
+            scoreboardLoadPtr = client.BaseAddress + 0x6E4C85;
+            hasControlPtr = client.BaseAddress + 0x699164;
+            finaleTriggerPtr = client.BaseAddress + 0x6F6B14;
+            break;
+        case "263E9AE9ABA9C751A14663DF432EE9EA":
+            print("using 2027 client offsets");
+            cutscenePlayingPtr = client.BaseAddress + 0x676584;
+            scoreboardLoadPtr = client.BaseAddress + 0x6E4D6D;
+            hasControlPtr = client.BaseAddress + 0x699264;
+            finaleTriggerPtr = client.BaseAddress + 0x6F6BF4;
+            break;
+        case "281AE29C235AACDEC83EE7471175D390":
+            print("using 2045 client offsets");
+            cutscenePlayingPtr = client.BaseAddress + 0x686F7C;
+            scoreboardLoadPtr = client.BaseAddress + 0x6F57BD;
+            hasControlPtr = client.BaseAddress + 0x6A9C64;
+            finaleTriggerPtr = client.BaseAddress + 0x707824;
+            break;
+        case "352E7987A4D778EEA082D2CCB8967EEB":
+            print("using 2075 client offsets");
+            cutscenePlayingPtr = client.BaseAddress + 0x688E14;
+            scoreboardLoadPtr = client.BaseAddress + 0x6F761D;
+            hasControlPtr = client.BaseAddress + 0x6ABAC4;
+            finaleTriggerPtr = client.BaseAddress + 0x709634;
+            break;
+        case "9A88102D7D7D7D55A2DCBF67406378F7":
+            print("using 2091 client offsets");
+            cutscenePlayingPtr = client.BaseAddress + 0x688E64;
+            scoreboardLoadPtr = client.BaseAddress + 0x6F7685;
+            hasControlPtr = client.BaseAddress + 0x6ABB24;
+            finaleTriggerPtr = client.BaseAddress + 0x7096AC;
+            break;
+        case "D75DD50CBB1A8B9F6106B7B38A5293F7":
+            print("using 2147 client offsets");
+            cutscenePlayingPtr = client.BaseAddress + 0x702C64;
+            scoreboardLoadPtr = client.BaseAddress + 0x775AB5;
+            hasControlPtr = client.BaseAddress + 0x72767C;
+            finaleTriggerPtr = client.BaseAddress + 0x787E14;
+            break;
+        case "1339CD4EF916923DA04B04904C1B544C":
+            print("using 2203 client offsets");
+            cutscenePlayingPtr = client.BaseAddress + 0x70F804;
+            scoreboardLoadPtr = client.BaseAddress + 0x782E55;
+            hasControlPtr = client.BaseAddress + 0x73421C;
+            finaleTriggerPtr = client.BaseAddress + 0x7951D4;
+            break;
+    }
+    if (whatsLoadingPtr != IntPtr.Zero)
+    {
+        goto clientScans;
+    }
 
-    var clientScanner = GetSignatureScanner("client.dll");
+    print("matched no known engine versions - sigscanning instead");
     var engineScanner = GetSignatureScanner("engine.dll");
 
     //------ WHATSLOADING SCANNING ------
     // get reference to "vidmemstats.txt" string
     IntPtr tmp = engineScanner.Scan(new SigScanTarget(GetByteStringS("vidmemstats.txt")));
-    IntPtr whatsLoadingPtr = IntPtr.Zero;
     tmp = engineScanner.Scan(new SigScanTarget(1, "68" + GetByteStringU((uint)tmp)));
     ShortOut(tmp, "vid mem stats ptr");
     // find the next immediate PUSH instruction
@@ -155,13 +280,19 @@ init
 
     //------ GAMELOADING SCANNING ------
     // add more as need be
-    IntPtr gameLoadingPtr = engineScanner.Scan(new SigScanTarget(2, "38 1D ?? ?? ?? ?? 0F 85 ?? ?? ?? ?? 56 53"));
+    gameLoadingPtr = engineScanner.Scan(new SigScanTarget(2, "38 1D ?? ?? ?? ?? 0F 85 ?? ?? ?? ?? 56 53"));
     gameLoadingPtr = game.ReadPointer(gameLoadingPtr);
 
+clientScans:
+    if (cutscenePlayingPtr != IntPtr.Zero)
+    {
+        goto report;
+    }
+    print("matched no known client versions - sigscanning instead");
+    var clientScanner = GetSignatureScanner("client.dll");
     //------ CUTSCENEPLAYING SCANNING ------
     // may want to sigscan this offset...
     const int cutsceneOff1 = 0x44;
-    IntPtr cutscenePlayingPtr = IntPtr.Zero;
     // search for "C_GameInstructor" string reference
     tmp = clientScanner.Scan(new SigScanTarget(GetByteStringS("C_GameInstructor") + "00"));
     tmp = clientScanner.Scan(new SigScanTarget(1, "68" + GetByteStringU((uint)tmp)));
@@ -184,7 +315,6 @@ init
 
     //------ SCOREBOARDLOADING SCANNING ------
     // find "$localcontrastenable" string reference
-    IntPtr scoreboardLoadPtr = IntPtr.Zero;
     tmp = clientScanner.Scan(new SigScanTarget(GetByteStringS("$localcontrastenable")));
     tmp = clientScanner.Scan(new SigScanTarget("68" + GetByteStringU((uint)tmp)));
     ShortOut(tmp, "$localcontrastenable string reference");
@@ -216,7 +346,6 @@ init
     //------ HASCONTROL SCANNING ------
     // maybe sigscan this...
     const int hasControlOff = 0x2C;
-    IntPtr hasControlPtr = IntPtr.Zero;
     IntPtr hasControlFunc = IntPtr.Zero;
     // get "weapon_muzzle_smoke" string address
     IntPtr muzzleSmokeStrPtr = clientScanner.Scan(new SigScanTarget(GetByteStringS("weapon_muzzle_smoke")));
@@ -261,7 +390,6 @@ hasControlScanAgain:
     }
 
     //------ FINALETRIGGER SCANNING ------
-    IntPtr finaleTriggerPtr = IntPtr.Zero;
     // find "l4d_WeaponStatData" string reference
     IntPtr statDataStrRef = clientScanner.Scan(new SigScanTarget(GetByteStringS("l4d_WeaponStatData")));
     statDataStrRef = clientScanner.Scan(new SigScanTarget("68 " + GetByteStringU((uint)statDataStrRef)));
@@ -292,13 +420,19 @@ finaleTriggerScanAgain:
     tmpScanner = new SignatureScanner(game, tmp + 1, (int)(tmpScanner.Address + tmpScanner.Size) - (int)(tmp + 0x20));
     goto finaleTriggerScanAgain;
 end:;
-
+report:
     ReportPointer(whatsLoadingPtr, "whats loading");
     ReportPointer(gameLoadingPtr, "game loading");
     ReportPointer(cutscenePlayingPtr, "cutscene playing");
     ReportPointer(scoreboardLoadPtr, "scoreboard loading");
     ReportPointer(hasControlPtr, "has control func");
     ReportPointer(finaleTriggerPtr, "finale trigger");
+    print("whatsLoading offset: 0x" + ((int)whatsLoadingPtr-(int)engine.BaseAddress).ToString("X") +
+    "\ngameLoading offset: 0x" + ((int)gameLoadingPtr-(int)engine.BaseAddress).ToString("X") +
+    "\ncutscenePlaying offset: 0x" + ((int)cutscenePlayingPtr-(int)client.BaseAddress).ToString("X") +
+    "\nscoreboardLoad offset: 0x" + ((int)scoreboardLoadPtr-(int)client.BaseAddress).ToString("X") +
+    "\nhasControl offset: 0x" + ((int)hasControlPtr-(int)client.BaseAddress).ToString("X") +
+    "\nfinaleTrigger offset: 0x" + ((int)finaleTriggerPtr-(int)client.BaseAddress).ToString("X"));
     
     sw.Stop();
     print("Sigscanning done in " + sw.ElapsedMilliseconds / 1000f + " seconds");
