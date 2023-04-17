@@ -51,6 +51,7 @@ startup
         "c13m1_alpinecreek",
         "c14m1_junkyard"
     };
+    vars.delayedSplitTimer = new Stopwatch();
 }
 
 init
@@ -563,12 +564,18 @@ split
         }
         else if (vars.cutscenePlaying.Current && !vars.cutscenePlaying.Old && vars.campaignsLastMaps.Contains(vars.whatsLoading.Current))
         {
+            vars.delayedSplitTimer.Start();
             if (vars.whatsLoading.Current == vars.lastSplit)
             {
+                vars.delayedSplitTimer.Reset();
                 print("Ceased double split attempt");
                 return false;
             }
-            print("Split on THE BEST CAMPAIGN EVER");
+        }
+        if (vars.delayedSplitTimer.ElapsedMilliseconds >= 200)
+        {
+            vars.delayedSplitTimer.Reset();
+            print("Split on THE BEST CAMPAIGN EVER (with a delay of 200ms)");
             vars.lastSplit = vars.whatsLoading.Current;
             return true;
         }
@@ -637,11 +644,17 @@ split
         }
         else if (vars.cutscenePlaying.Current && !vars.cutscenePlaying.Old && !vars.campaignsLastMaps.Contains(vars.whatsLoading))
         {
+            vars.delayedSplitTimer.Start();
             if (vars.whatsLoading.Current == vars.lastSplit)
             {
+                vars.delayedSplitTimer.Reset();
                 print("Ceased double split attempt");
                 return false;
             }
+        }
+        if (vars.delayedSplitTimer.ElapsedMilliseconds >= 200)
+        {
+            vars.delayedSplitTimer.Reset();
             vars.lastSplit = vars.whatsLoading.Current;
             vars.campaignsCompleted++;
             print("Finished THE BEST CAMPAIGN EVER and the campaign sum is now " + vars.campaignsCompleted.ToString());
