@@ -476,7 +476,7 @@ report:
     
     vars.startRun = false;
     vars.cutsceneStart = DateTime.MaxValue;
-    vars.lastSplit = null;
+    vars.lastSplit = "";
 }
 
 onStart
@@ -499,7 +499,7 @@ start
         {
             vars.startRun=false;
             print("(cutsceneless) Run autostarted");
-            vars.lastSplit = vars.whatsLoading.Current;
+            vars.lastSplit = "";
             return true;
         }
         return false;
@@ -513,7 +513,7 @@ start
             {
                 print("CUSTSCENE RAN FOR " + (DateTime.Now - vars.cutsceneStart));
                 vars.cutsceneStart = DateTime.MaxValue;
-                vars.lastSplit = vars.whatsLoading.Current;
+                vars.lastSplit = "";
                 return true;
             }
             else if (vars.cutsceneStart != DateTime.MaxValue)
@@ -586,7 +586,7 @@ split
         if (settings["burhac"]) // VERY JANKY, probably not efficient and is hardcoded to the 14 official maps, but it's the only way we can do it when gameinstructor is turned off
         {
             // We are not loading, haven't split already and are on a campaign's first map
-            if (!vars.gameLoading.Current && !vars.whatsLoading.Current.Equals(vars.lastSplit) && vars.campaignsFirstMaps.Contains(vars.whatsLoading.Current)) {
+            if (!vars.gameLoading.Current && !vars.whatsLoading.Current.Equals(vars.lastSplit) && !vars.lastSplit.Equals("") && vars.campaignsFirstMaps.Contains(vars.whatsLoading.Current)) {
                 // Once we have control after a cutscene plays for at least 1 second, we're ready to split
                 if (vars.hasControl.Current)
                 {
