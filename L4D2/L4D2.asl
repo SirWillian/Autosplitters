@@ -479,10 +479,14 @@ report:
     vars.lastSplit = null;
 }
 
-start
+onStart
 {
     if (settings["AutomaticGameTime"])
         timer.CurrentTimingMethod = TimingMethod.GameTime;
+}
+
+start
+{
 
     if (settings["cutscenelessStart"])
     {
