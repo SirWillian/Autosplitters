@@ -138,6 +138,7 @@ init
     IntPtr scoreboardLoadPtr = IntPtr.Zero;
     IntPtr hasControlPtr = IntPtr.Zero;
     IntPtr finaleTriggerPtr = IntPtr.Zero;
+    IntPtr svCheatsPtr = IntPtr.Zero;
     Stopwatch sw = new Stopwatch();
     sw.Start();
     // check for known versions
@@ -205,6 +206,7 @@ init
             scoreboardLoadPtr = client.BaseAddress + 0x6DB58D;
             hasControlPtr = client.BaseAddress + 0x68FBD4;
             finaleTriggerPtr = client.BaseAddress + 0x6ED414;
+            svCheatsPtr = client.BaseAddress + 0x6DB040;
             break;
         case "474DB57CBCDC9819AA36FBFA55CCFBF5":
             print("using 2012 client offsets");
@@ -212,6 +214,7 @@ init
             scoreboardLoadPtr = client.BaseAddress + 0x6E4C85;
             hasControlPtr = client.BaseAddress + 0x699164;
             finaleTriggerPtr = client.BaseAddress + 0x6F6B14;
+            svCheatsPtr = client.BaseAddress + 0x6E4738;
             break;
         case "263E9AE9ABA9C751A14663DF432EE9EA":
             print("using 2027 client offsets");
@@ -219,6 +222,7 @@ init
             scoreboardLoadPtr = client.BaseAddress + 0x6E4D6D;
             hasControlPtr = client.BaseAddress + 0x699264;
             finaleTriggerPtr = client.BaseAddress + 0x6F6BF4;
+            svCheatsPtr = client.BaseAddress + 0x6E4820;
             break;
         case "281AE29C235AACDEC83EE7471175D390":
             print("using 2045 client offsets");
@@ -226,6 +230,7 @@ init
             scoreboardLoadPtr = client.BaseAddress + 0x6F57BD;
             hasControlPtr = client.BaseAddress + 0x6A9C64;
             finaleTriggerPtr = client.BaseAddress + 0x707824;
+            svCheatsPtr = client.BaseAddress + 0x6F5270;
             break;
         case "352E7987A4D778EEA082D2CCB8967EEB":
             print("using 2075 client offsets");
@@ -233,6 +238,7 @@ init
             scoreboardLoadPtr = client.BaseAddress + 0x6F761D;
             hasControlPtr = client.BaseAddress + 0x6ABAC4;
             finaleTriggerPtr = client.BaseAddress + 0x709634;
+            svCheatsPtr = client.BaseAddress + 0x6F70D0;
             break;
         case "9A88102D7D7D7D55A2DCBF67406378F7":
             print("using 2091 client offsets");
@@ -240,6 +246,7 @@ init
             scoreboardLoadPtr = client.BaseAddress + 0x6F7685;
             hasControlPtr = client.BaseAddress + 0x6ABB24;
             finaleTriggerPtr = client.BaseAddress + 0x7096AC;
+            svCheatsPtr = client.BaseAddress + 0x6F7138;
             break;
         case "D75DD50CBB1A8B9F6106B7B38A5293F7":
             print("using 2147 client offsets");
@@ -247,6 +254,7 @@ init
             scoreboardLoadPtr = client.BaseAddress + 0x775AB5;
             hasControlPtr = client.BaseAddress + 0x72767C;
             finaleTriggerPtr = client.BaseAddress + 0x787E14;
+            svCheatsPtr = client.BaseAddress + 0x775568;
             break;
         case "1339CD4EF916923DA04B04904C1B544C":
             print("using 2203 client offsets");
@@ -254,6 +262,7 @@ init
             scoreboardLoadPtr = client.BaseAddress + 0x782E55;
             hasControlPtr = client.BaseAddress + 0x73421C;
             finaleTriggerPtr = client.BaseAddress + 0x7951D4;
+            svCheatsPtr = client.BaseAddress + 0x782908;
             break;
     }
     if (whatsLoadingPtr != IntPtr.Zero)
@@ -291,6 +300,10 @@ clientScans:
     }
     print("matched no known client versions - sigscanning instead");
     var clientScanner = GetSignatureScanner("client.dll");
+    //------ SV_CHEATS SCANNING ------
+    svCheatsPtr = clientScanner.Scan(new SigScanTarget(2, "83 3D ?? ?? ?? ?? 00 56 57"));
+    svCheatsPtr = game.ReadPointer(svCheatsPtr);
+
     //------ CUTSCENEPLAYING SCANNING ------
     // may want to sigscan this offset...
     const int cutsceneOff1 = 0x44;
@@ -428,12 +441,14 @@ report:
     ReportPointer(scoreboardLoadPtr, "scoreboard loading");
     ReportPointer(hasControlPtr, "has control func");
     ReportPointer(finaleTriggerPtr, "finale trigger");
+    ReportPointer(svCheatsPtr, "sv_cheats");
     print("whatsLoading offset: 0x" + ((int)whatsLoadingPtr-(int)engine.BaseAddress).ToString("X") +
     "\ngameLoading offset: 0x" + ((int)gameLoadingPtr-(int)engine.BaseAddress).ToString("X") +
     "\ncutscenePlaying offset: 0x" + ((int)cutscenePlayingPtr-(int)client.BaseAddress).ToString("X") +
     "\nscoreboardLoad offset: 0x" + ((int)scoreboardLoadPtr-(int)client.BaseAddress).ToString("X") +
     "\nhasControl offset: 0x" + ((int)hasControlPtr-(int)client.BaseAddress).ToString("X") +
-    "\nfinaleTrigger offset: 0x" + ((int)finaleTriggerPtr-(int)client.BaseAddress).ToString("X"));
+    "\nfinaleTrigger offset: 0x" + ((int)finaleTriggerPtr-(int)client.BaseAddress).ToString("X") +
+    "\nsv_cheats offset: 0x" + ((int)svCheatsPtr-(int)client.BaseAddress).ToString("X"));
     
     sw.Stop();
     print("Sigscanning done in " + sw.ElapsedMilliseconds / 1000f + " seconds");
@@ -477,6 +492,12 @@ report:
     vars.startRun = false;
     vars.cutsceneStart = DateTime.MaxValue;
     vars.lastSplit = "";
+
+    vars.GetCvarValue = (Func<IntPtr, bool>)((cvarPointer) =>
+    {
+        return memory.ReadValue<int>(game.ReadPointer(cvarPointer)+0x30) != 0;
+    });
+    vars.svCheatsPtr = svCheatsPtr;
 }
 
 onStart
@@ -487,6 +508,13 @@ onStart
 
 start
 {
+
+    if (vars.GetCvarValue(vars.svCheatsPtr))
+    {
+        vars.startRun=false;
+        vars.cutsceneStart = DateTime.MaxValue;
+        return false;
+    }
 
     if (settings["cutscenelessStart"])
     {
