@@ -537,7 +537,7 @@ start
         // Once we have control after a cutscene plays for at least 1 second, we're ready to start.
         if (vars.hasControl.Current && !vars.gameLoading.Current)
         {
-            if (DateTime.Now - vars.cutsceneStart > TimeSpan.FromSeconds(1))
+            if (DateTime.Now - vars.cutsceneStart > TimeSpan.FromSeconds(0.25))
             {
                 print("CUSTSCENE RAN FOR " + (DateTime.Now - vars.cutsceneStart));
                 vars.cutsceneStart = DateTime.MaxValue;
@@ -618,7 +618,7 @@ split
                 // Once we have control after a cutscene plays for at least 1 second, we're ready to split
                 if (vars.hasControl.Current)
                 {
-                    if (DateTime.Now - vars.cutsceneStart > TimeSpan.FromSeconds(1))
+                    if (DateTime.Now - vars.cutsceneStart > TimeSpan.FromSeconds(0.25))
                     {
                         print("(burhacSplit) CUTSCENE RAN FOR " + (DateTime.Now - vars.cutsceneStart));
                         vars.cutsceneStart = DateTime.MaxValue;
