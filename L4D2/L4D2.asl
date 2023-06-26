@@ -585,6 +585,7 @@ split
     {
         if (vars.finaleTrigger.Current && !vars.finaleTrigger.Old)
         {
+            vars.delayedSplitTimer.Reset()
             if (vars.whatsLoading.Current == vars.lastSplit)
             {
                 print("Ceased double split attempt");
@@ -665,6 +666,7 @@ split
     {
         if (vars.finaleTrigger.Current && !vars.finaleTrigger.Old)
         {
+            vars.delayedSplitTimer.Reset()
             if (vars.whatsLoading.Current == vars.lastSplit)
             {
                 print("Ceased double split attempt");
