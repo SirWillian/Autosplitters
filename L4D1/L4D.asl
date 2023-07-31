@@ -31,6 +31,7 @@ startup
 	
 	vars.CurrentVersion="";
 	refreshRate=30;
+	vars.delayedSplitTimer = new Stopwatch();
 }
 
 init
@@ -350,7 +351,7 @@ start
 	}
 	else
 	{
-		// Once we have control after a cutscene plays for at least a quarter of a second, we're ready to start.
+		// Once we have control after a cutscene plays for at least an eigth of a second, we're ready to start.
 		if (vars.hasControl.Current && !vars.gameLoading.Current)
 		{
 			if (DateTime.Now - vars.cutsceneStart > TimeSpan.FromSeconds(0.125))
@@ -399,9 +400,16 @@ split
 	{
 		if(!vars.gameLoading.Current && vars.cutscenePlaying.Current && !vars.cutscenePlaying.Old)
 		{
-			print("Split on finale");
+			vars.delayedSplitTimer.Start();
+			print("Delayed split timer start");
 			return true;
 		}
+		if (vars.delayedSplitTimer.ElapsedMilliseconds >= 200)
+        {
+            vars.delayedSplitTimer.Reset();
+            print("Split on finale (with a delay of 200ms)");
+            return true;
+        }
 		//Split inbetween chapters
 		if(settings["chapterSplit"])
 		{
