@@ -402,14 +402,13 @@ split
 		{
 			vars.delayedSplitTimer.Start();
 			print("Delayed split timer start");
-			return true;
 		}
 		if (vars.delayedSplitTimer.ElapsedMilliseconds >= 200)
-        {
-            vars.delayedSplitTimer.Reset();
-            print("Split on finale (with a delay of 200ms)");
-            return true;
-        }
+		{
+			vars.delayedSplitTimer.Reset();
+			print("Split on finale (with a delay of 200ms)");
+			return true;
+		}
 		//Split inbetween chapters
 		if(settings["chapterSplit"])
 		{
