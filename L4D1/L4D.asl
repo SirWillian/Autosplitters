@@ -31,6 +31,7 @@ startup
 	
 	vars.CurrentVersion="";
 	refreshRate=30;
+	vars.delayedSplitTimer = new Stopwatch();
 }
 
 init
@@ -111,10 +112,60 @@ init
 #endregion
 
 #region SIGSCANNING
+	IntPtr gameLoadingPtr = IntPtr.Zero;
+	IntPtr cutscenePlayingPtr = IntPtr.Zero;
+	IntPtr scoreboardLoadPtr = IntPtr.Zero;
+	IntPtr hasControlPtr = IntPtr.Zero;
+	IntPtr svCheatsPtr = IntPtr.Zero;
 	Stopwatch sw = new Stopwatch();
 	sw.Start();
 
-	var clientScanner = GetSignatureScanner("client.dll");
+	ProcessModuleWow64Safe engine = GetModule("engine.dll");
+	ProcessModuleWow64Safe client = GetModule("client.dll");
+	if (engine == null || client == null) {
+		Thread.Sleep(250);
+		throw new Exception("engine.dll and/or client.dll isn't loaded yet!"); }
+
+	string engineHash;
+	using (var md5 = System.Security.Cryptography.MD5.Create())
+	using (var s = File.Open(engine.FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+	engineHash = md5.ComputeHash(s).Select(x => x.ToString("X2")).Aggregate((a, b) => a + b);
+	string clientHash;
+	using (var md5 = System.Security.Cryptography.MD5.Create())
+	using (var s = File.Open(client.FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+	clientHash = md5.ComputeHash(s).Select(x => x.ToString("X2")).Aggregate((a, b) => a + b);
+	switch (engineHash) {
+		case "2653D0AD5873DF3791CFF5DDF8411A08":
+			print("using 1005 engine offsets");
+			gameLoadingPtr = engine.BaseAddress + 0x5D1E6C;
+			break;
+		case "D74562040EDA326FAA35E72A3F267422":
+			print("using 1041 engine offsets");
+			gameLoadingPtr = engine.BaseAddress + 0x5A79A4;
+			break;
+	}
+	switch (clientHash) {
+		case "D15C6196FF3F223236E90EEDCFE5BE44":
+			print("using 1005 client offsets");
+			cutscenePlayingPtr = client.BaseAddress + 0x522954;
+			scoreboardLoadPtr = client.BaseAddress + 0x571BCD;
+			hasControlPtr = client.BaseAddress + 0x545364;
+			svCheatsPtr = client.BaseAddress + 0x571690;
+			break;
+		case "AA59CEC2593409E9F0808A67AB8CC382":
+			print("using 1041 client offsets");
+			cutscenePlayingPtr = client.BaseAddress + 0x546C14;
+			scoreboardLoadPtr = client.BaseAddress + 0x5961CD;
+			hasControlPtr = client.BaseAddress + 0x5696C4;
+			svCheatsPtr = client.BaseAddress + 0x595C90;
+			break;
+	}
+	if (gameLoadingPtr != IntPtr.Zero)
+	{
+		goto clientScans;
+	}
+
+	print("matched no known engine versions - sigscanning instead");
 	var engineScanner = GetSignatureScanner("engine.dll");
 
 	/* Commenting this and other references to it out - the code works, but it's currently not needed for the L4D1 autosplitter.
@@ -136,13 +187,24 @@ init
 
 	//------ GAMELOADING SCANNING ------
 	// add more as need be
-	IntPtr gameLoadingPtr = engineScanner.Scan(new SigScanTarget(2, "38 1D ?? ?? ?? ?? 0F 85 ?? ?? ?? ?? 56 53"));
+	gameLoadingPtr = engineScanner.Scan(new SigScanTarget(2, "38 1D ?? ?? ?? ?? 0F 85 ?? ?? ?? ?? 56 53"));
 	gameLoadingPtr = game.ReadPointer(gameLoadingPtr);
+
+clientScans:
+	if (cutscenePlayingPtr != IntPtr.Zero)
+	{
+		goto report;
+	}
+	print("matched no known client versions - sigscanning instead");
+	var clientScanner = GetSignatureScanner("client.dll");
+	//------ SV_CHEATS SCANNING ------
+	svCheatsPtr = clientScanner.Scan(new SigScanTarget(2, "83 3D ?? ?? ?? ?? 00 56 57"));
+	svCheatsPtr = game.ReadPointer(svCheatsPtr);
 
 	//------ CUTSCENEPLAYING SCANNING ------
 	// may want to sigscan this offset...
 	const int cutsceneOff1 = 0x44;
-	IntPtr cutscenePlayingPtr = IntPtr.Zero;
+	cutscenePlayingPtr = IntPtr.Zero;
 	// search for "C_GameInstructor" string reference
 	IntPtr tmp = clientScanner.Scan(new SigScanTarget(GetByteStringS("C_GameInstructor") + "00"));
 	tmp = clientScanner.Scan(new SigScanTarget(1, "68" + GetByteStringU((uint)tmp)));
@@ -165,7 +227,7 @@ init
 
 	//------ SCOREBOARDLOADING SCANNING ------
 	// find "$localcontrastenable" string reference
-	IntPtr scoreboardLoadPtr = IntPtr.Zero;
+	scoreboardLoadPtr = IntPtr.Zero;
 	tmp = clientScanner.Scan(new SigScanTarget(GetByteStringS("$localcontrastenable")));
 	tmp = clientScanner.Scan(new SigScanTarget("68" + GetByteStringU((uint)tmp)));
 	ShortOut(tmp, "$localcontrastenable string reference");
@@ -195,14 +257,21 @@ init
 	}
 
 	//------ HASCONTROL SCANNING ------
-	IntPtr hasControlPtr = clientScanner.Scan(new SigScanTarget(1, "BE ?? ?? ?? ?? 33 DB D9 EE 89 5E E4 D9"));
+	hasControlPtr = clientScanner.Scan(new SigScanTarget(1, "BE ?? ?? ?? ?? 33 DB D9 EE 89 5E E4 D9"));
 	hasControlPtr = game.ReadPointer(hasControlPtr)+0x10;
 
+report:
 	//ReportPointer(whatsLoadingPtr, "whats loading");
 	ReportPointer(gameLoadingPtr, "game loading");
 	ReportPointer(cutscenePlayingPtr, "cutscene playing");
 	ReportPointer(scoreboardLoadPtr, "scoreboard loading");
 	ReportPointer(hasControlPtr, "has control func");
+	ReportPointer(svCheatsPtr, "sv_cheats");
+	print("gameLoading offset: 0x" + ((int)gameLoadingPtr-(int)engine.BaseAddress).ToString("X") +
+	"\ncutscenePlaying offset: 0x" + ((int)cutscenePlayingPtr-(int)client.BaseAddress).ToString("X") +
+	"\nscoreboardLoad offset: 0x" + ((int)scoreboardLoadPtr-(int)client.BaseAddress).ToString("X") +
+	"\nhasControl offset: 0x" + ((int)hasControlPtr-(int)client.BaseAddress).ToString("X") +
+	"\nsv_cheats offset: 0x" + ((int)svCheatsPtr-(int)client.BaseAddress).ToString("X"));
 	
 	sw.Stop();
 	print("Sigscanning done in " + sw.ElapsedMilliseconds / 1000f + " seconds");
@@ -241,12 +310,29 @@ init
 	
 	vars.startRun=false;
 	vars.cutsceneStart = DateTime.MaxValue;
+
+	vars.GetCvarValue = (Func<IntPtr, bool>)((cvarPointer) =>
+	{
+		return memory.ReadValue<int>(game.ReadPointer(cvarPointer)+0x30) != 0;
+	});
+	vars.svCheatsPtr = svCheatsPtr;
+}
+
+onStart
+{
+	if (settings["AutomaticGameTime"])
+		timer.CurrentTimingMethod = TimingMethod.GameTime;
 }
 
 start
 {
-	if (settings["AutomaticGameTime"])
-		timer.CurrentTimingMethod = TimingMethod.GameTime;
+
+	if (vars.GetCvarValue(vars.svCheatsPtr))
+	{
+		vars.startRun=false;
+		vars.cutsceneStart = DateTime.MaxValue;
+		return false;
+	}
 
 	if (settings["cutscenelessStart"])
 	{
@@ -265,10 +351,10 @@ start
 	}
 	else
 	{
-		// Once we have control after a cutscene plays for at least a quarter of a second, we're ready to start.
+		// Once we have control after a cutscene plays for at least an eigth of a second, we're ready to start.
 		if (vars.hasControl.Current && !vars.gameLoading.Current)
 		{
-			if (DateTime.Now - vars.cutsceneStart > TimeSpan.FromSeconds(0.25))
+			if (DateTime.Now - vars.cutsceneStart > TimeSpan.FromSeconds(0.125))
 			{
 				print("CUSTSCENE RAN FOR " + (DateTime.Now - vars.cutsceneStart));
 				vars.cutsceneStart = DateTime.MaxValue;
@@ -314,7 +400,13 @@ split
 	{
 		if(!vars.gameLoading.Current && vars.cutscenePlaying.Current && !vars.cutscenePlaying.Old)
 		{
-			print("Split on finale");
+			vars.delayedSplitTimer.Start();
+			print("Delayed split timer start");
+		}
+		if (vars.delayedSplitTimer.ElapsedMilliseconds >= 200)
+		{
+			vars.delayedSplitTimer.Reset();
+			print("Split on finale (with a delay of 200ms)");
 			return true;
 		}
 		//Split inbetween chapters
