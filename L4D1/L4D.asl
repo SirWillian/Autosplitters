@@ -23,9 +23,6 @@ startup
 	settings.Add("originalCampaigns", false, "Original Campaigns","ILs");
 	settings.Add("allCampaigns", false, "All Campaigns","originalCampaigns");
 	
-	settings.Add("cutscenelessStart", false, "Autostart on cutsceneless campaigns");
-	settings.SetToolTip("cutscenelessStart", "Uses a different method to detect when to autostart. Causes the splitter to autostart on every level");
-	
 	settings.Add("debug", false, "See internal values through DebugView");
 	settings.SetToolTip("debug", "See the values that the splitter is using to make actions. Requires DebugView. This setting may cause additional lag, so only have this checked if needed.");
 	
@@ -334,49 +331,45 @@ start
 		return false;
 	}
 
-	if (settings["cutscenelessStart"])
+	if(vars.gameLoading.Current && vars.hasControl.Current && !vars.startRun)
 	{
-		if(vars.gameLoading.Old && !vars.startRun)
+		vars.startRun=true;
+		print("(cutsceneless) Autostart triggered");
+	}
+	if (!vars.gameLoading.Current && vars.hasControl.Current && vars.startRun)
+	{
+		vars.startRun=false;
+		vars.cutsceneStart = DateTime.MaxValue;
+		print("(cutsceneless) Run autostarted");
+		return true;
+	}
+
+	// Once we have control after a cutscene plays for at least a quarter of a second, we're ready to start.
+	if (vars.hasControl.Current && !vars.gameLoading.Current)
+	{
+		if (DateTime.Now - vars.cutsceneStart > TimeSpan.FromSeconds(0.25))
 		{
-			vars.startRun=true;
-			print("(cutsceneless) Autostart triggered");
-		}
-		if (!vars.gameLoading.Current && vars.hasControl.Current && vars.startRun)
-		{
+			print("CUSTSCENE RAN FOR " + (DateTime.Now - vars.cutsceneStart));
+			vars.cutsceneStart = DateTime.MaxValue;
 			vars.startRun=false;
-			print("(cutsceneless) Run autostarted");
 			return true;
 		}
-		return false;
+		else if (vars.cutsceneStart != DateTime.MaxValue)
+		{
+			// Sometimes the game sets 'vars.hasControl.Current' to 'false', even when you have control. We need to detect those cases in order to reset the cutscene timer.
+			print("FALSE POSITIVE!");
+			vars.cutsceneStart = DateTime.MaxValue;
+		}
 	}
-	else
+	
+	// If we're not loading, and the player does not have control, a cutscene must be playing. Mark the time.
+	if (!vars.hasControl.Old && !vars.hasControl.Current && !vars.gameLoading.Current && vars.cutsceneStart == DateTime.MaxValue)
 	{
-		// Once we have control after a cutscene plays for at least an eigth of a second, we're ready to start.
-		if (vars.hasControl.Current && !vars.gameLoading.Current)
-		{
-			if (DateTime.Now - vars.cutsceneStart > TimeSpan.FromSeconds(0.125))
-			{
-				print("CUSTSCENE RAN FOR " + (DateTime.Now - vars.cutsceneStart));
-				vars.cutsceneStart = DateTime.MaxValue;
-				return true;
-			}
-			else if (vars.cutsceneStart != DateTime.MaxValue)
-			{
-				// Sometimes the game sets 'vars.hasControl.Current' to 'false', even when you have control. We need to detect those cases in order to reset the cutscene timer.
-				print("FALSE POSITIVE!");
-				vars.cutsceneStart = DateTime.MaxValue;
-			}
-		}
-		
-		// If we're not loading, and the player does not have control, a cutscene must be playing. Mark the time.
-		if (!vars.hasControl.Old && !vars.hasControl.Current && !vars.gameLoading.Current && vars.cutsceneStart == DateTime.MaxValue)
-		{
-			print("CUSTSCENE START!");
-			vars.cutsceneStart = DateTime.Now;
-		}
-		
-		return false;
+		print("CUSTSCENE START!");
+		vars.cutsceneStart = DateTime.Now;
 	}
+	
+	return false;
 	
 	/* Old start logic, relies on cutscenePlaying which needs gameinstructor turned on, so we don't use it anymore
 	if(vars.gameLoading.Old && vars.cutscenePlaying.Current && !vars.startRun)
@@ -398,7 +391,7 @@ split
 	//Split on finales
 	if(settings["campaignSplit"])
 	{
-		if(!vars.gameLoading.Current && vars.cutscenePlaying.Current && !vars.cutscenePlaying.Old)
+		if(!vars.gameLoading.Current && !vars.gameLoading.Old && vars.cutscenePlaying.Current && !vars.cutscenePlaying.Old)
 		{
 			vars.delayedSplitTimer.Start();
 			print("Delayed split timer start");
