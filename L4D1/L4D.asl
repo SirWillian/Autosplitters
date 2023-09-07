@@ -391,7 +391,7 @@ split
 	//Split on finales
 	if(settings["campaignSplit"])
 	{
-		if(!vars.gameLoading.Current && vars.cutscenePlaying.Current && !vars.cutscenePlaying.Old)
+		if(!vars.gameLoading.Current && !vars.gameLoading.Old && vars.cutscenePlaying.Current && !vars.cutscenePlaying.Old)
 		{
 			vars.delayedSplitTimer.Start();
 			print("Delayed split timer start");
