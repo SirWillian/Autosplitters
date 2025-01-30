@@ -70,12 +70,6 @@ static inline bool find_sv_cheats(ProcessId proc, Address eng, u64 eng_size,
     *out += (0x30 - 0x18); // offset to cvar's int value from cvar vt
     return true;
 }
-// Aciidz found this pattern. Don't remember what it points to exactly,
-// but it works
-// const struct byte_pattern ptrn_sv_cheats = {
-//     _PTRN_ARRAY(0x83, 0x3D, 0x00, 0x00, 0x00, 0x00, 0x00, 0x56, 0x57),
-//     _PTRN_ARRAY(2, 3, 4, 5)
-// };
 
 // Fishing this out of the server's DT_BasePlayer SendTable
 // DT_Infected also matches this pattern but the member offset is the same
@@ -119,6 +113,26 @@ m_Local_found:
         return false;
     *out += 0x3c; // offset to member inside m_Local never changed
     return true;
+}
+
+// SurvivorBot::PhysicsSimulate checks this player member at some point
+static const struct byte_pattern ptrn_off_m_positionEntity = {
+    _PTRN_ARRAY(0x50, 0x68, 0x00, 0x00, 0x00, 0x00, 0xE8, 0x00, 0x00, 0x00,
+                0x00, 0x83, 0xC4, 0x10, 0x8B, 0xCE),
+    _PTRN_ARRAY(2, 3, 4, 5, 7, 8, 9, 10)
+};
+static inline bool find_m_positionEntity(ProcessId gamepid, Address server,
+        u64 srv_size, int *out) {
+    Address tmp = process_scan(gamepid, &ptrn_off_m_positionEntity, server,
+            srv_size);
+    // There's a jmp a couple instructions after the end of the pattern
+    // Following the jmp, the first MOV reads m_positionEntity
+    u8 jmp_offset;
+    if (!process_read(gamepid, tmp + 22, &jmp_offset, 1))
+        return false;
+    tmp += 23 + jmp_offset;
+    // Read object member offset from MOV instruction
+    return process_read(gamepid, tmp + 2, (u8 *)out, 4);
 }
 
 // CDirector::EndScenario call in CDirector::RestartScenarioFromVote
@@ -246,8 +260,9 @@ static inline bool find_scoreboard_visible(ProcessId gamepid, Address client,
 // some random function that calls from an address containing the address of
 // KeyValueSystem(), which returns a pointer to an object
 static const struct byte_pattern ptrn_KeyValuesSystem = {
-    _PTRN_ARRAY(0x56, 0x8B, 0xF1, 0x85, 0xF6, 0x74, 0x00, 0xFF, 0x15),
-    _PTRN_ARRAY(6)
+    _PTRN_ARRAY(0xE8, 0x00, 0x00, 0x00, 0x00, 0xFF, 0x15, 0x00, 0x00, 0x00,
+                0x00, 0x8B, 0x10, 0x6A, 0x01),
+    _PTRN_ARRAY(1, 2, 3, 4, 7, 8, 9, 10)
 };
 static inline bool find_kvs_strings(ProcessId gamepid, Address client,
         u64 cli_size, Address *out) {
@@ -255,14 +270,15 @@ static inline bool find_kvs_strings(ProcessId gamepid, Address client,
     // Find CALL instruction
     Address tmp = process_scan(gamepid, &ptrn_KeyValuesSystem, client, cli_size);
     // CALL instruction -> pointer to KeyValuesSystem() function
-    if (!process_read_addr(gamepid, tmp + 9, &tmp))
+    if (!process_read_addr(gamepid, tmp + 7, &tmp))
         return false;
-    // pointer to KeyValuesSystem() function -> address of KeyValuesSystem())
+    // pointer to KeyValuesSystem() function -> address of KeyValuesSystem()
     if (!process_read_addr(gamepid, tmp, &tmp))
         return false;
     // address of KeyValuesSystem() -> address of CKeyValuesSystem object
-    if (!process_read_addr(gamepid, tmp + 1, &tmp))
-        return false;
+    // if (!process_read_addr(gamepid, tmp + 1, &tmp))
+    //     return false;
+    return process_read_addr(gamepid, tmp + 1, out);
     // address of CKeyValuesSystem object -> address of m_Strings.Base()
-    return process_read_addr(gamepid, tmp + 0x14, out);
+    // return process_read_addr(gamepid, tmp + 0x14, out);
 }

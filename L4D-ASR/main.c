@@ -58,6 +58,7 @@ static DEF_WATCHER(bool, scoreboard_visible);
 static DEF_WATCHER(int, sv_cheats);
 static int off_m_fFlags = 0;
 static int off_m_iHideHud = 0;
+static int off_m_positionEntity = 0;
 static Address kv_mission_metadata = 0;
 static struct campaign_context g_ChapterItems[20] = {0};
 static bool is_first_map = false;
@@ -128,6 +129,7 @@ static void clear_memdata(void) {
     sv_cheats.addr = 0; sv_cheats.curval = 0;
     off_m_fFlags = 0;
     off_m_iHideHud = 0;
+    off_m_positionEntity = 0;
     kv_mission_metadata = 0;
 }
 
@@ -158,6 +160,7 @@ static bool scan_memdata(void) {
     u64 srv_size = process_get_module_size(gamepid, string("server.dll"));
     FIND(m_fFlags, server, srv_size, off_m_fFlags)
     FIND(m_iHideHUD, server, srv_size, off_m_iHideHud)
+    FIND(m_positionEntity, server, srv_size, off_m_positionEntity)
     int off_timer;
     if (is_l4d1)
         FIND(off_restart_game_timer_l4d1, server, srv_size, off_timer)
@@ -174,9 +177,14 @@ static bool scan_memdata(void) {
     u64 cli_size = process_get_module_size(gamepid, string("client.dll"));
     FIND(scoreboard_visible, client, cli_size, scoreboard_visible.addr);
     if (!is_l4d1_0) {
-        Address kvs_strings;
-        FIND(kvs_strings, client, cli_size, kvs_strings);
-        kvs_init(gamepid, kvs_strings);
+        Address kvs_obj, kvs_strings;
+        FIND(kvs_strings, client, cli_size, kvs_obj);
+        if (!process_read_addr(gamepid, kvs_obj + 0x14, &kvs_strings)) {
+            print("Failed to find kvs_strings");
+            return false;
+        }
+        printval(kvs_strings);
+        kvs_init(gamepid, kvs_obj, kvs_strings);
     }
 
     #undef FIND
@@ -231,7 +239,8 @@ static bool campaign_maps(const char *map, int map_len, struct KeyValues *out) {
         return false;
 
     struct KeyValues mission_kv;
-    for (Address addr = mission_meta.child; addr; addr = mission_kv.next) {
+    for (Address addr = iskvv2 ? mission_meta.v2.child : mission_meta.v1.child;
+            addr; addr = iskvv2 ? mission_kv.v2.next : mission_kv.v1.next) {
         // if we can't read this, the iterations can't continue
         // for other failures, we can cope that this mission wasn't the one we
         // are looking for and keep iterating
@@ -241,7 +250,8 @@ static bool campaign_maps(const char *map, int map_len, struct KeyValues *out) {
         if (!kvs_getsubkey(&maps, string("coop"), &maps)) continue;
 
         struct KeyValues map_kv;
-        for (Address map_addr = maps.child; map_addr; map_addr = map_kv.next) {
+        for (Address map_addr = iskvv2 ? maps.v2.child : maps.v1.child;
+                map_addr; map_addr = iskvv2 ? map_kv.v2.next : map_kv.v1.next) {
             if (!kvs_read(map_addr, &map_kv)) break;
             struct KeyValues map_name;
             char strval[256];
@@ -308,7 +318,8 @@ static void update_map_info(void) {
     else kv_map_info(curmap, curmap_len);
 }
 
-static bool check_runstart(int edict_flags, int player_flags) {
+static bool check_runstart(int edict_flags, int player_flags,
+        int position_entity) {
     static bool start_run = false;
     bool map_starting = scr_draw_loading.curval ||
             (restart_game_timer.curval > 0.0);
@@ -322,15 +333,16 @@ static bool check_runstart(int edict_flags, int player_flags) {
     // down (and the edict is valid/full) delays the check long enough
     // 261 == FL_FULL_EDICT_CHANGED | FL_EDICT_FULL | FL_EDICT_CHANGED,
     // 4 == FL_EDICT_FULL, 32 == FL_FROZEN
-    if (!map_starting && (edict_flags & 261) == 4 && !(player_flags & 32)) {
+    if (!map_starting && (edict_flags & 261) == 4 && !(player_flags & 32) &&
+            position_entity <= 0) {
         start_run = false;
         return true;
     }
     return false;
 }
 
-static bool try_split(int edict_flags, int pl_flags, int pl_hidehud,
-        int old_hidehud) {
+static bool try_split(int edict_flags, int pl_flags, int pl_posent,
+        int pl_hidehud, int old_hidehud) {
     // Regular map transition detected by the scoreboard appearing
     if (scoreboard_visible.curval && !scoreboard_visible.oldval)
         return true;
@@ -346,7 +358,7 @@ static bool try_split(int edict_flags, int pl_flags, int pl_hidehud,
     // Optional split when gaining control at the start of a campaign
     // (except on the first split of the run). Check for control gain first to
     // ensure we don't miss a state change and mess up autostarting later
-    if (check_runstart(edict_flags, pl_flags) && settings.cutscene_split &&
+    if (check_runstart(edict_flags, pl_flags, pl_posent) && settings.cutscene_split &&
             has_split && is_first_map) {
         char curmap[256];
         int curmap_len;
@@ -370,13 +382,17 @@ static void update_timer(void) {
     TimerState old_state = timer_state;
     timer_state = timer_get_state();
 
-    int pl_flags = 0, ed_flags = player_edict.curval.stateflags;
+    int ed_flags = player_edict.curval.stateflags, pl_flags = 0, pl_posent = 0;
     Address pl_ent = player_edict.curval.ent_unknown;
-    if (__builtin_expect(pl_ent, 1))
+    if (__builtin_expect(pl_ent, 1)) {
         process_read(gamepid, pl_ent + off_m_fFlags, (u8 *)&pl_flags, 4);
+        process_read(gamepid, pl_ent + off_m_positionEntity,
+                (u8 *)&pl_posent, 4);
+    }
     if (timer_state == TIMERSTATE_NOT_RUNNING) {
         if (!is_first_map && !settings.autostart_any_map) return;
-        if (!check_runstart(ed_flags, pl_flags) || sv_cheats.curval) return;
+        if (!check_runstart(ed_flags, pl_flags, pl_posent) || sv_cheats.curval)
+            return;
         print("Run autostarted");
         timer_start();
         timer_state = TIMERSTATE_RUNNING;
@@ -402,7 +418,7 @@ timer_started:
         int old_hidehud = pl_hidehud;
         if (__builtin_expect(pl_ent, 1))
             process_read(gamepid, pl_ent+off_m_iHideHud, (u8 *)&pl_hidehud, 4);
-        if (try_split(ed_flags, pl_flags, pl_hidehud, old_hidehud)) {
+        if (try_split(ed_flags, pl_flags, pl_posent, pl_hidehud, old_hidehud)) {
             has_split = true;
             timer_split();
         }
@@ -414,7 +430,7 @@ __attribute__((export_name("update"))) void update(void) {
     if (__builtin_expect(first_run, 0)) {
         first_run = false;
         setup();
-        print("L4D2 autosplitter initialized");
+        print("L4D autosplitter initialized");
     }
     if (__builtin_expect(gamepid == 0, 0)) {
         if (!(gamepid = process_attach(string("left4dead2.exe")))) {
